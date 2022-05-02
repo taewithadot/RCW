@@ -1,0 +1,5 @@
+initial implementation will use static / manual files for checking wing membership and stockpile levels (stockpile will be global and not wing based)
+
+this will allow for a detachment from nekore/external functionality so that the core features can be implemented independently
+
+when nekore functionality is in place to generate dynamic wing membership list and generate a stockpile for each wing, we can transition this code to using that information instead

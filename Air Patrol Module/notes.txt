@@ -1,0 +1,4 @@
+initial features should include:
+
+- ability to detect which airbases on the map are owned by which coalition, and field CAP aircraft from those bases
+- ability to field random number and type of aircraft from coalition bases
