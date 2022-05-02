@@ -1,8 +1,12 @@
 --Credit to Pikey, Speed & Grimes for their work on Serialising tables, included below, FlightControl for MOOSE (Required), Ghostrider+Moose community for fixing Radians instead of degrees
+--The NDMB Persistence Module is a modified version of Pikey's Simple Group Saving and Simple Static Saving scripts.
+--https://github.com/thebgpikester/SimpleGroupSaving
+--https://github.com/thebgpikester/SimpleStaticSaving
  
 --Edit 'SaveScheduleUnits' and 'SaveScheduleStatics' to change duration between scheduled saves
---LIMITATIONS
 
+
+--CURRENT LIMITATIONS
 --Naval Groups not Saved. If Included, there may be issues with spawned objects and Client slots where Ships have slots for aircraft/helo. 
 --Possible if not a factor, or we can code in conditional ignore / whitelist for certain naval units in a later version
 
