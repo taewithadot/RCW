@@ -1,9 +1,9 @@
 # NDMB
-Neko Dynamic Mission Base (NDMB) is a collection of script "modules" for DCS World created by members of the Neko PMC DCS community.
+Neko Dynamic Mission Base (NDMB) is a collection of scripting "modules" for DCS World created by members of the Neko PMC DCS community.
 
-These scripts are designed to be modular components that can be dropped into any DCS World mission in order to add new features and functionality that would not normally be possible in the simulator. 
+These scripts are designed to be modular components that can be dropped into any DCS World mission in order to add new features and functionality to DCS that would not normally be possible. This is accomplished using a mixture of MOOSE, SLMOD and external software alongside these NDMB scripts.
 
-Please note that some of these scripts are to be used in conjunction with proprietary/private software and code also created solely for use by the Neko PMC community. This repository is not designed to offer maximum convenience to entities outside of Neko PMC. That said, anyone is welcome to use these scripts in part or in whole for their own endeavours, and we will make efforts not to obstruct or deliberately obfuscate or disable otherwise perfectly operational scripts.
+Please note that some of these scripts are to be used in conjunction with proprietary/private software and code also created solely for use by the Neko PMC community. This repo is not designed to offer maximum convenience to entities outside of Neko PMC. That said, anyone is welcome to use this repo in part or in whole for their own endeavours, and we will make efforts not to obstruct or deliberately obfuscate or disable otherwise perfectly operational scripts.
 
 As with nearly all scripts that generate or enable persistence in DCS World you will need to allow the scripting engine to read/write data in order to run most of these scripts, which can be done by commenting out the last two sanitizeModule lines in [DCS Install Dir]/Scripts/MissionScripting.lua.
 
