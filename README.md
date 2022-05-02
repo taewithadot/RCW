@@ -28,3 +28,5 @@ The NDMB Ground Combat Module allows for dynamic spawning of ground units at des
 The NDMB Armament Module allows for player armament and weapons loadouts to become persistent, operating from a weapons stockpile that can be either manually controlled or automatically updated by external sources. When players take off from airfields, the weapons on their aircraft are subtracted from stockpiles, and when they land, any remaining weapons are returned to the same stockpiles.
 
 # Weather Module
+
+The NDMB Weather Module allows for weather to be generated at mission runtime instead of being a static definition inside the mission. Note that this module may rely mostly/solely on external code and may not contain much of anything, it is purely here for reference purposes and may be removed at a later date.
