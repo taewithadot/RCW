@@ -12,8 +12,8 @@
 
  -----------------------------------
 
-SaveScheduleUnits=120 --how many seconds between each check of all the units.
-SaveScheduleStatics=120 --how many seconds between each check of all the statics.
+SaveScheduleUnits=10 --how many seconds between each check of all the units.
+SaveScheduleStatics=10 --how many seconds between each check of all the statics.
  -----------------------------------
 local version = "v1.00"
  
@@ -28,7 +28,7 @@ function IntegratedbasicSerialize(s)
       end
     end
 end
-  
+
 
 function IntegratedserializeWithCycles(name, value, saved)
   local basicSerialize = function (o)
@@ -188,24 +188,27 @@ if file_exists("NDMB-Persistence-Statics.lua") then
   elseif SaveStatics[_name]["dead"] == true then
  
     stat:Destroy()
+    
 -- to not replace models with dead models, delete from here 
-local tempTable = 
-{
-  ["heading"] = SaveStatics[_name]["heading"],
-  ["heading"] = SaveStatics[_name]["heading"],
-  ["shape_name"] = SaveStatics[_name]["shape_name"],
-  ["type"] = SaveStatics[_name]["type"],
-  ["unitId"] = SaveStatics[_name]["unitId"],
-  ["rate"] = 20,
-  ["name"] = _name,
-  ["category"] = SaveStatics[_name]["category"],
-  ["y"] = SaveStatics[_name]["y"], 
-  ["x"] = SaveStatics[_name]["x"], 
-  ["dead"] = true,
-  ["Country"] = SaveStatics[_name]["Country"],
-}
+  local tempTable = 
+  {
+    ["heading"] = SaveStatics[_name]["heading"],
+    ["heading"] = SaveStatics[_name]["heading"],
+    ["shape_name"] = SaveStatics[_name]["shape_name"],
+    ["type"] = SaveStatics[_name]["type"],
+    ["unitId"] = SaveStatics[_name]["unitId"],
+    ["rate"] = 20,
+    ["name"] = _name,
+    ["category"] = SaveStatics[_name]["category"],
+    ["y"] = SaveStatics[_name]["y"], 
+    ["x"] = SaveStatics[_name]["x"], 
+    ["dead"] = true,
+    ["Country"] = SaveStatics[_name]["Country"],
+  }
 
   coalition.addStaticObject(SaveStatics[_name]["Country"], tempTable) --SaveStatics[k]["Country"]
+--  local boompos = stat.GetVec3()
+--  trigger.action.explosion(boompos, 200)
 --to here. Note this will produce an error in moose because it doesn't like adding a dead static to the database.
   end
   end)
@@ -272,7 +275,7 @@ function unitSave()
 
   timer.scheduleFunction(function() 
     unitSave()
-    end, nil, SaveScheduleUnits  )
+    end, nil, timer.getTime() + SaveScheduleUnits  )
 
 end
 
@@ -308,7 +311,7 @@ function staticSave()
 
   timer.scheduleFunction(function() 
     staticSave()
-    end, nil, SaveScheduleStatics  )
+    end, nil, timer.getTime() + SaveScheduleStatics  )
 
 end
 
