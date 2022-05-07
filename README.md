@@ -9,7 +9,7 @@ As with nearly all scripts that generate or enable persistence in DCS World you 
 
 If you have any questions regarding this repository please join the Neko PMC Discord where you are welcome to ask questions: https://discord.gg/2DvxuKfMdM
 
-Plase find below a list of modules that make up NDMB and their purpose. These are listed in order of priority of importance/development. This project is still in a very early stage and as such the Air & Ground Combat modules do not exist yet.
+Please find below a list of modules that make up NDMB and their purpose. These are listed in order of priority of importance/development. This project is still in a very early stage and as such the Air & Ground Combat modules do not exist yet.
 
 # Persistence Module
 
