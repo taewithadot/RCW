@@ -1,4 +1,4 @@
-# NDMB
+# Neko Dynamic Mission Base (NDMB)
 Neko Dynamic Mission Base (NDMB) is a collection of scripting "modules" for DCS World created by members of the Neko PMC DCS community.
 
 These scripts are designed to be modular components that can be dropped into any DCS World mission in order to add new features and functionality to DCS that would not normally be possible. This is accomplished using a mixture of MOOSE, SLMOD and external software alongside these NDMB scripts.
