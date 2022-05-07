@@ -13,7 +13,7 @@ Plase find below a list of modules that make up NDMB and their purpose. These ar
 
 # Persistence Module
 
-The NDMB Persistence Module saves the state of all ground units and static objects in the mission. This allows a DCS server/session to be stopped and started and continued from where it was. The current version of this module only supports the saving of ground units.
+The NDMB Persistence Module saves the state of all ground units, ships and static objects in the mission. This allows a DCS server/session to be stopped and started and continued from where it was. The current version of this module only supports the saving of ground units and ships. Ships to be skipped can be added into the shipWhitelist at the top of the file. This should be used if there are ships with slots on them (eg. carrier Tomcat slots) or serious issues will occur as ships with slots cannot be respawned.
 
 # Air Combat Module
 
