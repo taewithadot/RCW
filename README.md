@@ -21,7 +21,7 @@ The NDMB Air Combat Module will generate air patrols, traffic and eventually str
 
 # Armament Module
 
-The NDMB Armament Module allows for player armament and weapons loadouts to become persistent, operating from a weapons stockpile that can be either manually controlled or automatically updated by external sources. When players take off from airfields, the weapons on their aircraft are subtracted from stockpiles, and when they land, any remaining weapons are returned to the same stockpiles. The current version of this module only supports checking against a single stockpile.
+The NDMB Armament Module allows for player armament and weapons loadouts to become persistent, operating from a weapons stockpile that can be either manually controlled or automatically updated by external sources. When players take off from airfields, the weapons on their aircraft are subtracted from stockpiles, and when they land, any remaining weapons are returned to the same stockpiles. If players take off with an invalid loadout, they are warned and given time to land, and if they continue to fly with the invalid loadout they are destroyed. The current version of this module only supports checking against a single stockpile.
 
 # Ground Combat Module
 
