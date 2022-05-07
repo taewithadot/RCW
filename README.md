@@ -11,22 +11,18 @@ If you have any questions regarding this repository please join the Neko PMC Dis
 
 Plase find below a list of modules that make up NDMB and their purpose. These are listed in order of priority of importance/development. Modules tagged as (Under development) are incomplete and may not function at all.
 
-# Persistence Module (Under development)
+# Persistence Module
 
-The NDMB Persistence Module saves the state of all ground units and static objects in the mission. This allows a DCS server/session to be stopped and started and continued from where it was.
+The NDMB Persistence Module saves the state of all ground units and static objects in the mission. This allows a DCS server/session to be stopped and started and continued from where it was. The current version of this module only supports the saving of ground units.
 
-# Air Patrol Module (Under development)
+# Air Combat Module
 
-The NDMB Air Patrol Module generates air patrols and traffic for both coalitions based on the airbases owned by each coalition. This allows for a dynamic air situation based on the current territory control.
+The NDMB Air Combat Module will generate air patrols, traffic and eventually strikes for both coalitions based on the airbases owned by each coalition. This will allow for a dynamic air situation based on the current territory control. This module will use a "matrix" of airbases on the map to determine where aircraft should take off and patrol from. This module does not yet have a working version.
 
-# Ground Combat Module (Under development)
+# Armament Module
 
-The NDMB Ground Combat Module allows for dynamic spawning of ground units at designated trigger zones or markers. This module is still in a "design" stage and its purpose and goals are yet to be finalised.
+The NDMB Armament Module allows for player armament and weapons loadouts to become persistent, operating from a weapons stockpile that can be either manually controlled or automatically updated by external sources. When players take off from airfields, the weapons on their aircraft are subtracted from stockpiles, and when they land, any remaining weapons are returned to the same stockpiles. The current version of this module only supports checking against a single stockpile.
 
-# Armament Module (Under development)
+# Ground Combat Module
 
-The NDMB Armament Module allows for player armament and weapons loadouts to become persistent, operating from a weapons stockpile that can be either manually controlled or automatically updated by external sources. When players take off from airfields, the weapons on their aircraft are subtracted from stockpiles, and when they land, any remaining weapons are returned to the same stockpiles.
-
-# Weather Module (Under development)
-
-The NDMB Weather Module allows for weather to be generated at mission runtime instead of being a static definition inside the mission. Note that this module may rely mostly/solely on external code and may not contain much of anything, it is purely here for reference purposes and may be removed at a later date.
+The NDMB Ground Combat Module will allow for dynamic spawning of ground units based on the same "matrix" system used by the air combat module. This will allow for a dynamic ground situation based on the current territory control. This module does not yet have a working version.
