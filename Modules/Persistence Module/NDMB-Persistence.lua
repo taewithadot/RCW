@@ -14,7 +14,13 @@
 
 SaveScheduleUnits=10 --how many seconds between each check of all the units.
 SaveScheduleStatics=10 --how many seconds between each check of all the statics.
+
+
+shipWhitelist = {}
+
+shipWhitelist = {"CVN_72"}
  -----------------------------------
+
 local version = "v1.00"
  
 function IntegratedbasicSerialize(s)
@@ -104,7 +110,7 @@ env.info("Loaded NDMB Persistence Module " .. version)
 
 if file_exists("NDMB-Persistence-Units.lua") then --Script has been run before, so we need to load the save
   env.info("Unit database exists, loading from file..")
-  AllGroups = SET_GROUP:New():FilterCategories("ground"):FilterActive(true):FilterStart()
+  AllGroups = SET_GROUP:New():FilterCategories({"ground","ship"}):FilterActive(true):FilterStart()
     AllGroups:ForEachGroup(function (grp)
       grp:Destroy()
     end)
@@ -165,7 +171,7 @@ groupData =
 
 else --Save File does not exist we start a fresh table, no spawns needed
   SaveUnits={}
-  AllGroups = SET_GROUP:New():FilterCategories("ground"):FilterActive(true):FilterStart()
+  AllGroups = SET_GROUP:New():FilterCategories({"ground","ship"}):FilterActive(true):FilterStart()
 end
 
 --STATICS
@@ -227,47 +233,63 @@ function unitSave()
   AllGroups:ForEachGroupAlive(function (grp)
     local DCSgroup = Group.getByName(grp:GetName() )
     local size = DCSgroup:getSize()
+    local ignore = false
 
     _unittable={}
 
+
     for i = 1, size do
 
-      local tmpTable =
+      for _, v in pairs(shipWhitelist) do
+        if v == grp:GetUnit(i):GetTypeName() then
+          ignore = true
+        end
+      end
 
-      {   
-        ["type"]=grp:GetUnit(i):GetTypeName(),
-        ["transportable"]=true,
-        ["unitID"]=grp:GetUnit(i):GetID(),
-        ["skill"]="Average",
-        ["y"]=grp:GetUnit(i):GetVec2().y,
-        ["x"]=grp:GetUnit(i):GetVec2().x,
-        ["name"]=grp:GetUnit(i):GetName(),
-        ["playerCanDrive"]=true,
-        ["heading"]=math.rad(grp:GetUnit(i):GetHeading()), --fixed 24/03/2020
-      }
-
-      table.insert(_unittable,tmpTable) --add units to a temporary table
     end
 
-    SaveUnits[grp:GetName()] =
-    {
-      ["CountryID"]=grp:GetCountry(),
-      ["SpawnCoalitionID"]=grp:GetCountry(),
-      ["tasks"]={}, 
-      ["CategoryID"]=grp:GetCategory(),
-      ["task"]="Ground Nothing",
-      ["route"]={}, 
-      ["groupId"]=grp:GetID(),
-      ["units"]= _unittable,
-      ["y"]=grp:GetVec2().y, 
-      ["x"]=grp:GetVec2().x,
-      ["name"]=grp:GetName(),
-      ["start_time"]=0,
-      ["CoalitionID"]=grp:GetCoalition(),
-      ["SpawnCountryID"]=grp:GetCoalition(),
-    }
+    if ignore == false then
 
-    end)
+      for i = 1, size do
+
+        local tmpTable =
+
+        {   
+          ["type"]=grp:GetUnit(i):GetTypeName(),
+          ["transportable"]=true,
+          ["unitID"]=grp:GetUnit(i):GetID(),
+          ["skill"]="Average",
+          ["y"]=grp:GetUnit(i):GetVec2().y,
+          ["x"]=grp:GetUnit(i):GetVec2().x,
+          ["name"]=grp:GetUnit(i):GetName(),
+          ["playerCanDrive"]=true,
+          ["heading"]=math.rad(grp:GetUnit(i):GetHeading()), --fixed 24/03/2020
+        }
+
+        table.insert(_unittable,tmpTable) --add units to a temporary table
+      end
+
+      SaveUnits[grp:GetName()] =
+      {
+        ["CountryID"]=grp:GetCountry(),
+        ["SpawnCoalitionID"]=grp:GetCountry(),
+        ["tasks"]={}, 
+        ["CategoryID"]=grp:GetCategory(),
+        ["task"]="Ground Nothing",
+        ["route"]={}, 
+        ["groupId"]=grp:GetID(),
+        ["units"]= _unittable,
+        ["y"]=grp:GetVec2().y, 
+        ["x"]=grp:GetVec2().x,
+        ["name"]=grp:GetName(),
+        ["start_time"]=0,
+        ["CoalitionID"]=grp:GetCoalition(),
+        ["SpawnCountryID"]=grp:GetCoalition(),
+      }
+
+    end
+
+  end)
 
   newMissionStr = IntegratedserializeWithCycles("SaveUnits",SaveUnits) --save the Table as a serialised type with key SaveUnits
   writemission(newMissionStr, "NDMB-Persistence-Units.lua")--write the file from the above to SaveUnits.lua
