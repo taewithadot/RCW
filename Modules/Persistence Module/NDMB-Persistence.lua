@@ -18,7 +18,16 @@ SaveScheduleStatics=10 --how many seconds between each check of all the statics.
 
 shipWhitelist = {}
 
-shipWhitelist = {"CVN_72"}
+shipWhitelist = {
+
+"CVN_71",
+"CVN_72",
+"CVN_73",
+"Stennis",
+"Forrestal",
+"LHA_Tarawa",
+
+}
  -----------------------------------
 
 local version = "v1.00"
@@ -79,7 +88,7 @@ function file_exists(name) --check if the file already exists for writing
   return false end 
 end
 
-function writemission(data, file)--Function for saving to file (commonly found)
+function writetofile(data, file)--Function for saving to file (commonly found)
   File = io.open(file, "w")
   File:write(data)
   File:close()
@@ -112,8 +121,29 @@ if file_exists("NDMB-Persistence-Units.lua") then --Script has been run before, 
   env.info("Unit database exists, loading from file..")
   AllGroups = SET_GROUP:New():FilterCategories({"ground","ship"}):FilterActive(true):FilterStart()
     AllGroups:ForEachGroup(function (grp)
-      grp:Destroy()
-    end)
+
+      local DCSgroup = Group.getByName(grp:GetName() )
+      local size = DCSgroup:getSize()
+      local ignore = false
+
+      for i = 1, size do
+
+        for _, v in pairs(shipWhitelist) do
+          if v == grp:GetUnit(i):GetTypeName() then
+            ignore = true
+          end
+        end
+
+      end
+
+      if ignore == false then
+      
+        grp:Destroy()
+
+      end
+
+
+      end)
 
   dofile("NDMB-Persistence-Units.lua")
   tempTable={}
@@ -292,7 +322,7 @@ function unitSave()
   end)
 
   newMissionStr = IntegratedserializeWithCycles("SaveUnits",SaveUnits) --save the Table as a serialised type with key SaveUnits
-  writemission(newMissionStr, "NDMB-Persistence-Units.lua")--write the file from the above to SaveUnits.lua
+  writetofile(newMissionStr, "NDMB-Persistence-Units.lua")--write the file from the above to SaveUnits.lua
   SaveUnits={}--clear the table for a new write.
 
   timer.scheduleFunction(function() 
@@ -328,7 +358,7 @@ function staticSave()
     end)
 
   local newMissionStr = IntegratedserializeWithCycles("SaveStatics",SaveStatics)
-  writemission(newMissionStr, "NDMB-Persistence-Statics.lua")
+  writetofile(newMissionStr, "NDMB-Persistence-Statics.lua")
   SaveStatics={} 
 
   timer.scheduleFunction(function() 
