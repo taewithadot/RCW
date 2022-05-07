@@ -1,7 +1,7 @@
 # Neko Dynamic Mission Base (NDMB)
 Neko Dynamic Mission Base (NDMB) is a collection of scripting "modules" for DCS World created by members of the Neko PMC DCS community.
 
-These scripts are designed to be modular components that can be dropped into any DCS World mission in order to add new features and functionality to DCS that would not normally be possible. This is accomplished using a mixture of MOOSE, SLMOD and external software alongside these NDMB scripts.
+These scripts are designed to be modular components that can be dropped into any DCS World mission in order to add new features and functionality to DCS that would not normally be possible. This is accomplished using MOOSE, serialising data and writing it to disk, along with external software that operates alongside and interacts with these NDMB scripts.
 
 Please note that some of these scripts are to be used in conjunction with proprietary/private software and code also created solely for use by the Neko PMC community. This repo is not designed to offer maximum convenience to entities outside of Neko PMC. That said, anyone is welcome to use this repo in part or in whole for their own endeavours, and we will make efforts not to obstruct or deliberately obfuscate or disable otherwise perfectly operational scripts.
 
@@ -9,7 +9,7 @@ As with nearly all scripts that generate or enable persistence in DCS World you 
 
 If you have any questions regarding this repository please join the Neko PMC Discord where you are welcome to ask questions: https://discord.gg/2DvxuKfMdM
 
-Plase find below a list of modules that make up NDMB and their purpose. These are listed in order of priority of importance/development. This project is still in early stages and as such there are no "complete" modules yet.
+Plase find below a list of modules that make up NDMB and their purpose. These are listed in order of priority of importance/development. This project is still in a very early stage and as such the Air & Ground Combat modules do not exist yet.
 
 # Persistence Module
 
