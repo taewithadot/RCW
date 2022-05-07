@@ -1,6 +1,6 @@
 --stockpile_static defaults
 
---NOTE - THIS FILE IS STILL UNDER CONSTRUCTION! NOT ALL WEAPON TYPES ARE PRESENT!
+-- this table is in the old serialise format and should be used as more of a reference
 
 stockpile_static = {}
 
