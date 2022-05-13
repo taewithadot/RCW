@@ -18,11 +18,14 @@ end
 function convertLuaToJSON(file)
 
 	luaTableInput = {}
-	luaTableInput = dofile(file)
-
-	luaTableOutput = net.lua2json(luaTableInput)
+	--luaTableInput = dofile(file)
+	dofile(file)
+	--luaTableOutput = net.lua2json(luaTableInput)
+	luaTableOutput = net.lua2json(stockpile_static) -- NEED TO MANUALLY DEFINE TABLE TO CONVERT HERE!!!
 
 	jsonReadyToWrite = "net.json2lua(" .. luaTableOutput .. ")"
+
+	trigger.action.outText(jsonReadyToWrite, 10)
 
 	writetofile(jsonReadyToWrite,outputFile)
 

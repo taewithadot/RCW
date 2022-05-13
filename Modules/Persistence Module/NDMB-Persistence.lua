@@ -32,6 +32,20 @@ shipWhitelist = {
 
 local version = "v1.00"
  
+function betterSerialize(tableToSerialize, tableName)
+
+  --tableToSerialize should be a table, and is the table that will be serialized to JSON.
+  --tableName should be a string, and will be the name of the table that is saved in JSON, and ultimately the variable name of the table when loaded back into lua
+
+    serializedTable = net.lua2json(tableToSerialize)
+    serializedTableFixQuotes = string.gsub(serializedTable, "\"", "\\\"")
+    jsonReadyToWrite = tableName .. " = net.json2lua(\"" .. serializedTableFixQuotes .. "\")"
+    return jsonReadyToWrite
+
+end
+
+
+--[[ OLD SERIALIZE CODE
 function IntegratedbasicSerialize(s)
     if s == nil then
       return "\"\""
@@ -80,6 +94,7 @@ function IntegratedserializeWithCycles(name, value, saved)
     return ""
   end
 end
+--]]
 
 function file_exists(name) --check if the file already exists for writing
   if lfs.attributes(name) then
@@ -145,15 +160,18 @@ if file_exists("NDMB-Persistence-Units.lua") then --Script has been run before, 
 
       end)
 
+  --dofile("NDMB-Persistence-Units.lua")
+  SaveUnits = {}
+
   dofile("NDMB-Persistence-Units.lua")
   tempTable={}
   Spawn={}
 --RUN THROUGH THE KEYS IN THE TABLE (GROUPS)
-  for k,v in pairs (SaveUnits) do
+  for k,v in pairs(SaveUnits) do
     units={}
 --RUN THROUGH THE UNITS IN EACH GROUP
       for i= 1, #(SaveUnits[k]["units"]) do 
-  
+
 tempTable =
 
   { 
@@ -210,7 +228,9 @@ end
 
 if file_exists("NDMB-Persistence-Statics.lua") then
   env.info("Statics database exists, loading from file..")
-  dofile("NDMB-Persistence-Statics.lua")
+  --dofile("NDMB-Persistence-Statics.lua")
+  SaveStatics = {}
+  SaveStatics = {dofile("NDMB-Persistence-Statics.lua")}
 
   AllStatics = SET_STATIC:New():FilterStart()
 
@@ -321,7 +341,7 @@ function unitSave()
 
   end)
 
-  newMissionStr = IntegratedserializeWithCycles("SaveUnits",SaveUnits) --save the Table as a serialised type with key SaveUnits
+  newMissionStr = betterSerialize(SaveUnits, "SaveUnits") --save the Table as a serialised type with key SaveUnits
   writetofile(newMissionStr, "NDMB-Persistence-Units.lua")--write the file from the above to SaveUnits.lua
   SaveUnits={}--clear the table for a new write.
 
@@ -357,7 +377,7 @@ function staticSave()
 
     end)
 
-  local newMissionStr = IntegratedserializeWithCycles("SaveStatics",SaveStatics)
+  local newMissionStr = betterSerialize(SaveStatics, "SaveStatics")
   writetofile(newMissionStr, "NDMB-Persistence-Statics.lua")
   SaveStatics={} 
 
