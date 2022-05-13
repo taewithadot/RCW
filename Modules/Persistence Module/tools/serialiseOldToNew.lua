@@ -5,32 +5,24 @@
 fileToConvert = "stockpile_static.lua"
 outputFile = "stockpile_static_new.lua"
 
-
-
-
-
 function writetofile(data, file)--Function for saving to file (commonly found)
   File = io.open(file, "w")
   File:write(data)
   File:close()
 end
 
-function convertLuaToJSON(file)
+function betterSerialize(tableToSerialize, tableName)
 
-	luaTableInput = {}
-	--luaTableInput = dofile(file)
-	dofile(file)
-	--luaTableOutput = net.lua2json(luaTableInput)
-	luaTableOutput = net.lua2json(stockpile_static) -- NEED TO MANUALLY DEFINE TABLE TO CONVERT HERE!!!
+  --tableToSerialize should be a table, and is the table that will be serialized to JSON.
+  --tableName should be a string, and will be the name of the table that is saved in JSON, and ultimately the variable name of the table when loaded back into lua
 
-	jsonReadyToWrite = "net.json2lua(" .. luaTableOutput .. ")"
-
-	trigger.action.outText(jsonReadyToWrite, 10)
-
-	writetofile(jsonReadyToWrite,outputFile)
+    serializedTable = net.lua2json(tableToSerialize)
+    serializedTableFixQuotes = string.gsub(serializedTable, "\"", "\\\"")
+    jsonReadyToWrite = tableName .. " = net.json2lua(\"" .. serializedTableFixQuotes .. "\")"
+    return jsonReadyToWrite
 
 end
 
-
-
-convertLuaToJSON(fileToConvert)
+dofile(fileToConvert)
+writeStr = betterSerialize(stockpile_static, "stockpile_static") --change this manually to the imported table as the first variable, and the table name in the file as the second variable as a string.
+writetofile(writeStr, outputFile)
