@@ -4,6 +4,8 @@ trigger.action.outText("NDMB Armament Module v1.00 loaded!", 10) --DEBUG
 
 UnitPunishmentImminent = {}
 
+
+--[[]
 function IntegratedbasicSerialize(s)
     if s == nil then
       return "\"\""
@@ -52,12 +54,24 @@ function IntegratedserializeWithCycles(name, value, saved)
     return ""
   end
 end
-
+--]]
 
 function writetofile(data, file)--Function for saving to file (commonly found)
 	File = io.open(file, "w")
 	File:write(data)
 	File:close()
+end
+
+function betterSerialize(tableToSerialize, tableName)
+
+  --tableToSerialize should be a table, and is the table that will be serialized to JSON.
+  --tableName should be a string, and will be the name of the table that is saved in JSON, and ultimately the variable name of the table when loaded back into lua
+
+    serializedTable = net.lua2json(tableToSerialize)
+    serializedTableFixQuotes = string.gsub(serializedTable, "\"", "\\\"")
+    jsonReadyToWrite = tableName .. " = net.json2lua(\"" .. serializedTableFixQuotes .. "\")"
+    return jsonReadyToWrite
+
 end
 
 function punishPlayer(unitName, time)
@@ -124,14 +138,12 @@ function LoadoutCheck_Takeoff:onEvent(Event)
 
 		end
 
-		stockpile_serialised = IntegratedserializeWithCycles("stockpile_static", stockpile_static)
+		stockpile_serialised = betterSerialize(stockpile_static, "stockpile_static")
 		writetofile(stockpile_serialised, "stockpile_static.lua")
 			
 	end 
 end
 world.addEventHandler(LoadoutCheck_Takeoff)
-
-
 
 
 
@@ -158,7 +170,7 @@ function LoadoutCheck_Land:onEvent(Event)
 
 		end
 
-	stockpile_serialised = IntegratedserializeWithCycles("stockpile_static", stockpile_static)
+	stockpile_serialised = betterSerialize(stockpile_static, "stockpile_static")
 	writetofile(stockpile_serialised, "stockpile_static.lua")
 
 
