@@ -37,11 +37,37 @@ caucasusMatrix["Vaziani"] = {"Soganlug", "Tbilisi-Lochini"}
 
 
 
-function checkAirbaseOwnership(airbase)
+--build initial ownership table
+airbaseOwnership = {}
 
-	airbaseToCheck = Airbase.getbyName()
-	return Airbase.getByName(airbase):getCoalition()
+for k,v in pairs(caucasusMatrix) do
+
+		airbaseOwnership[k] = Airbase.getByName(k):getCoalition()
 
 end
 
+--check which airfields are in conflict with each other (opposing coalition airbases next to each other)
+for k,v in pairs(caucasusMatrix) do
+
+	neighbouringBases = {}
+	neighbouringBases = caucasusMatrix[k]
+
+	for i = 1, #neighbouringBases do
+
+		if (airbaseOwnership[k] == 1 and airbaseOwnership[neighbouringBases[i]] == 2) or (airbaseOwnership[k] == 2 and airbaseOwnership[neighbouringBases[i]] == 1) then
+
+		trigger.action.outText(k .. " and " .. neighbouringBases[i] .. " are in conflict!", 10)
+
+		end
+
+	end
+
+end
+
+
+
+
 --for each airbase in the matrix, check the coalition, and then check the coalition of each neighbour. if mismatch, spawn a CAP group.
+
+
+
