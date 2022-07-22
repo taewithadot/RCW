@@ -126,7 +126,7 @@ end
 
 
 --SCRIPT START
-trigger.action.outText("NDMB Persistence Module v1.00 Loaded!")
+trigger.action.outText("RDMB Persistence Module v1.00 Loaded!")
 
 --UNITS
 

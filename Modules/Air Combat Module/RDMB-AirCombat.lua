@@ -1,13 +1,13 @@
---NDMB Air Combat Lite by Taerdryn
-
-zoneCount = 1
-groupsPerZone = 1
+--RDMB Air Combat Module by Taerdryn
 incursionZone = {}
 patrolSpawning = {}
 patrolSpawned = {}
 patrolObj = {}
-patrolMinSpawnTime = 1
-patrolMaxSpawnTime = 20
+
+zoneCount = 1 --Specify how many zones are in the mission here. THIS MUST BE EXACTLY THE NUMBER OF INCURSION ZONES IN THE MIZ!
+groupsPerZone = 1 --Specify how many different patrol groups are available per incursion zone.
+patrolMinSpawnTime = 1 --Specify minimum spawn time for a patrol when a friendly enters an incursion zone.
+patrolMaxSpawnTime = 20 --Specify maximum spawn time for a patrol when a friendly enters an incursion zone.
 
 --initialise incursion zone tables and patrol spawn status
 
@@ -83,4 +83,5 @@ function patrolSpawn(zoneNumber)
 
 end
 
+trigger.action.outText("RDMB Air Combat Module v1.00 Loaded!")
 timer.scheduleFunction(incursionZoneScan, nil, timer.getTime() + 5) --schedule scan of incursion zones

@@ -1,6 +1,6 @@
 --Neko PMC Armament Module
 
-trigger.action.outText("NDMB Armament Module v1.00 loaded!", 10) --DEBUG
+trigger.action.outText("RDMB Armament Module v1.00 loaded!", 10) --DEBUG
 
 UnitPunishmentImminent = {}
 
