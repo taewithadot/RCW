@@ -4,10 +4,10 @@ patrolSpawning = {}
 patrolSpawned = {}
 patrolObj = {}
 
-zoneCount = 1 --Specify how many zones are in the mission here. THIS MUST BE EXACTLY THE NUMBER OF INCURSION ZONES IN THE MIZ!
-groupsPerZone = 1 --Specify how many different patrol groups are available per incursion zone.
-patrolMinSpawnTime = 1 --Specify minimum spawn time for a patrol when a friendly enters an incursion zone.
-patrolMaxSpawnTime = 20 --Specify maximum spawn time for a patrol when a friendly enters an incursion zone.
+zoneCount = 18 --Specify how many zones are in the mission here. THIS MUST BE EXACTLY THE NUMBER OF INCURSION ZONES IN THE MIZ!
+groupsPerZone = 25 --Specify how many different patrol groups are available per incursion zone.
+patrolMinSpawnTime = 300 --Specify minimum spawn time for a patrol when a friendly enters an incursion zone.
+patrolMaxSpawnTime = 900 --Specify maximum spawn time for a patrol when a friendly enters an incursion zone.
 
 --initialise incursion zone tables and patrol spawn status
 
