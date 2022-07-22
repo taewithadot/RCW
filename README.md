@@ -1,5 +1,5 @@
 # Ravenspear Dynamic Mission Base (RDMB)
-Ravenspear Dynamic Mission Base (RDMB) is a collection of scripting "modules" for DCS World created by members of the Neko PMC DCS community.
+Ravenspear Dynamic Mission Base (RDMB) is a collection of scripting "modules" for DCS World created by members of the Ravenspear Tactical Solutions DCS community.
 
 These scripts are designed to be modular components that can be dropped into any DCS World mission in order to add new features and functionality to DCS that would not normally be possible. This is accomplished using MOOSE, serialising data and writing it to disk, along with external software that operates alongside and interacts with these RDMB scripts.
 
