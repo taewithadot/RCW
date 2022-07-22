@@ -17,7 +17,7 @@ The RDMB Persistence Module saves the state of all ground units, ships and stati
 
 # Air Combat Module
 
-The RDMB Air Combat Module will generate air patrols, traffic and eventually strikes for both coalitions based on the airbases owned by each coalition. This will allow for a dynamic air situation based on the current territory control. This module will use a "matrix" of airbases on the map to determine where aircraft should take off and patrol from. This module does not yet have a working version.
+The RDMB Air Combat Module is responsible for generating enemy air patrols and eventually strikess, based on the airbases owned by each coalition. This will allow for a dynamic air situation based on the current territory control. This module will use a "matrix" of airbases on the map to determine where aircraft should take off and patrol from.
 
 # Armament Module
 
