@@ -9,16 +9,6 @@ patrolObj = {}
 patrolMinSpawnTime = 1
 patrolMaxSpawnTime = 20
 
---local ac=UNIT:FindByName("My Aircraft")
---local coord=ac:GetCoordinate()
---local airbase=coord:GetClosestAirbase()
---env.info(string.format("Closest airbase %s", airbase:GetName()))
-
---if not Group.getByName('USA AWACS') then
---   mist.respawnGroup('USA AWACS', true)
--- end
-
-
 --initialise incursion zone tables and patrol spawn status
 
 for i = 1, zoneCount do
