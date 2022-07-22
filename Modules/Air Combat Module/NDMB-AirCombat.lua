@@ -1,73 +1,96 @@
---[[
-need load in airfield matrix
+--NDMB Air Combat Lite by Taerdryn
 
-then i need to like check what coalition owns each airfield
+zoneCount = 1
+groupsPerZone = 1
+incursionZone = {}
+patrolSpawning = {}
+patrolSpawned = {}
+patrolObj = {}
+patrolMinSpawnTime = 1
+patrolMaxSpawnTime = 20
 
-then i need to figure out where there are adjacent opposing coalitions between two airfields
+--local ac=UNIT:FindByName("My Aircraft")
+--local coord=ac:GetCoordinate()
+--local airbase=coord:GetClosestAirbase()
+--env.info(string.format("Closest airbase %s", airbase:GetName()))
 
-then i can spawn flights of shit from there
-
-wow cool
-
-]]--
-
-caucasusMatrix = {}
-
-caucasusMatrix["Batumi"] = {"Kobuleti"}
-caucasusMatrix["Kobuleti"] = {"Batumi", "Senaki-Kolkhi", "Kutaisi"}
-caucasusMatrix["Kutaisi"] = {"Kobuleti", "Senaki-Kolkhi"}
-caucasusMatrix["Senaki-Kolkhi"] = {"Kutaisi", "Kobuleti", "Sukhumi-Babushara"}
-caucasusMatrix["Sukhumi-Babushara"] = {"Senaki-Kolkhi", "Gudauta"}
-caucasusMatrix["Gudauta"] = {"Sukhumi-Babushara", "Sochi-Adler"}
-caucasusMatrix["Sochi-Adler"] = {"Gudauta", "Gelendzhik"}
-caucasusMatrix["Gelendzhik"] = {"Sochi-Adler", "Novorossiysk", "Krymsk"}
-caucasusMatrix["Novorossiysk"] = {"Gelendzhik", "Anapa-Vityazevo", "Krymsk"}
-caucasusMatrix["Anapa-Vityazevo"] = {"Krymsk", "Novorossiysk"}
-caucasusMatrix["Krymsk"] = {"Anapa-Vityazevo", "Novorossiysk", "Gelendzhik"}
-caucasusMatrix["Krasnodar-Center"] = {"Krymsk", "Krasnodar-Pashkovsky"}
-caucasusMatrix["Krasnodar-Pashkovsky"] = {"Krasnodar-Center", "Maykop-Khanskaya"}
-caucasusMatrix["Maykop-Khanskaya"] = {"Krasnodar-Pashkovsky", "Mineralnye Vody"}
-caucasusMatrix["Mineralnye Vody"] = {"Maykop-Khanskaya", "Nalchik", "Mozdok"}
-caucasusMatrix["Nalchik"] = {"Mineralnye Vody", "Mozdok", "Beslan"}
-caucasusMatrix["Mozdok"] = {"Mineralnye Vody", "Nalchik", "Beslan"}
-caucasusMatrix["Beslan"] = {"Nalchik", "Mozdok", "Tbilisi-Lochini"}
-caucasusMatrix["Tbilisi-Lochini"] = {"Beslan", "Soganlug", "Vaziani", "Kutaisi"}
-caucasusMatrix["Soganlug"] = {"Vaziani", "Tbilisi-Lochini"}
-caucasusMatrix["Vaziani"] = {"Soganlug", "Tbilisi-Lochini"}
+--if not Group.getByName('USA AWACS') then
+--   mist.respawnGroup('USA AWACS', true)
+-- end
 
 
+--initialise incursion zone tables and patrol spawn status
 
---build initial ownership table
-airbaseOwnership = {}
+for i = 1, zoneCount do
 
-for k,v in pairs(caucasusMatrix) do
-
-		airbaseOwnership[k] = Airbase.getByName(k):getCoalition()
+	incursionZone[i] = ZONE:FindByName("IZ"..i) --enumerate zone list based on zoneCount parameter
+	patrolSpawning[i] = false
+	patrolSpawned[i] = false --set all patrol spawns to false as mission has just started
 
 end
 
---check which airfields are in conflict with each other (opposing coalition airbases next to each other)
-for k,v in pairs(caucasusMatrix) do
+function incursionZoneScan()
 
-	neighbouringBases = {}
-	neighbouringBases = caucasusMatrix[k]
+	local randSpawnTime = math.random(patrolMinSpawnTime, patrolMaxSpawnTime)
 
-	for i = 1, #neighbouringBases do
+	for i = 1, zoneCount do
 
-		if (airbaseOwnership[k] == 1 and airbaseOwnership[neighbouringBases[i]] == 2) or (airbaseOwnership[k] == 2 and airbaseOwnership[neighbouringBases[i]] == 1) then
+		local coord=incursionZone[i]:GetCoordinate() --getCoordinate of each incursionZone
+		local airbase=coord:GetClosestAirbase() --find closest airbase to coordinate
+		local coalition = airbase:GetCoalition() --get coalition of closest airbase to zone
+		--trigger.action.outText("Closest airbase is " .. airbase:GetName(), 5)
 
-		trigger.action.outText(k .. " and " .. neighbouringBases[i] .. " are in conflict!", 10)
+		if coalition == 1 then --if closest airbase is enemy
+			
+			incursionZone[i]:Scan({Object.Category.UNIT},{Unit.Category.AIRPLANE}) --scan each incursionZone for planes
+
+			if incursionZone[i]:IsNoneInZoneOfCoalition(2) == false then --if any friendlies are in zone
+				
+				if patrolObj[i] ~= nil then --check if a patrol has ever been spawned here
+
+					trigger.action.outText("Existing patrol object found",5) --debug
+
+					if patrolObj[i].AliveUnits == 0 and patrolSpawning[i] == false then --if nothing is alive in patrol
+
+						trigger.action.outText("PATROL DEAD", 5)
+						patrolSpawned[i] = false --then it is not spawned
+
+					end
+
+					if patrolSpawning[i] == false and patrolSpawned[i] == false then --if patrol not currently spawning, and is not already spawned
+
+						trigger.action.outText("Nothing alive on existing patrol, scheduling another one to spawn in ." .. randSpawnTime .. " seconds.", 5)
+						patrolSpawning[i] = true --set patrol to spawning state
+						timer.scheduleFunction(patrolSpawn, i, timer.getTime() + randSpawnTime) --schedule patrol to spawn
+
+					end
+
+				elseif patrolSpawning[i] == false then --if patrol has never been spawned, make sure initial spawn is not scheduled
+					trigger.action.outText("No previous patrol object found, creating new patrol object and spawning patrol in " .. randSpawnTime .. " seconds.", 5)
+					patrolSpawning[i] = true --set patrol to spawning state
+					timer.scheduleFunction(patrolSpawn, i, timer.getTime() + randSpawnTime) --schedule patrol to spawn
+
+				end
+
+			end
 
 		end
 
 	end
 
+	timer.scheduleFunction(incursionZoneScan, nil, timer.getTime() + 5) --reschedule scan of incursion zones
+
 end
 
+function patrolSpawn(zoneNumber)
 
+	local patrolToSpawn = math.random(1, groupsPerZone) --select a random patrol group to spawn
+	trigger.action.outText("Spawning " .. "z" .. zoneNumber .. "p" .. patrolToSpawn, 5)
+	patrolObj[zoneNumber] = SPAWN:New("z" .. zoneNumber .. "p" .. patrolToSpawn) --create spawn object for patrol group
+	patrolObj[zoneNumber]:Spawn() --spawn patrol group
+	patrolSpawning[zoneNumber] = false --set spawning state to false
+	patrolSpawned[zoneNumber] = true --set spawned state to true
 
+end
 
---for each airbase in the matrix, check the coalition, and then check the coalition of each neighbour. if mismatch, spawn a CAP group.
-
-
-
+timer.scheduleFunction(incursionZoneScan, nil, timer.getTime() + 5) --schedule scan of incursion zones

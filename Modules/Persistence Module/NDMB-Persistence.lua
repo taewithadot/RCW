@@ -29,8 +29,6 @@ shipWhitelist = {
 
 }
  -----------------------------------
-
-local version = "v1.00"
  
 function betterSerialize(tableToSerialize, tableName)
 
@@ -128,7 +126,7 @@ end
 
 
 --SCRIPT START
-env.info("Loaded NDMB Persistence Module " .. version)
+trigger.action.outText("NDMB Persistence Module v1.00 Loaded!")
 
 --UNITS
 
