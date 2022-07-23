@@ -5089,8 +5089,6 @@ local SpawnTempsTemplatesBlue = {
 }
 ]]
 
-if allow_blue_zeus_units == true then
-
 for i, Template in pairs(SpawnTempsArmorBlue)
 	do coalition.addGroup(country.id.CJTF_BLUE, Group.Category.GROUND, Template)
 	IndBlueArmor = IndBlueArmor + 1
@@ -5196,7 +5194,6 @@ if ww2_asset_pack_enable == true then
 	end
 end
 
-end
 --[[
 
 -- Blue Ground Battalion Unit Types
