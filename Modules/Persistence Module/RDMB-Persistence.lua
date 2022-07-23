@@ -18,7 +18,7 @@ SaveScheduleStatics=10 --how many seconds between each check of all the statics.
 
 shipWhitelist = {}
 
-shipWhitelist = {
+shipWhitelist = { --list of carriers to ignore as they may have spawn points on them and deleting them can cause serious problems.
 
 "CVN_71",
 "CVN_72",
@@ -26,6 +26,8 @@ shipWhitelist = {
 "Stennis",
 "Forrestal",
 "LHA_Tarawa",
+"KUZNECOW",
+"CV_1143_5",
 
 }
  -----------------------------------
@@ -151,7 +153,7 @@ if file_exists("RDMB-Persistence-Units.lua") then --Script has been run before, 
 
       if ignore == false then
       
-        grp:Destroy()
+--        grp:Destroy()
 
       end
 
