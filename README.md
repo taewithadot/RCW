@@ -40,7 +40,8 @@ The RDMB Ground Combat Module allows for dynamic spawning of ground units by a g
 RDMB uses several functions from the MOOSE scripting framework: https://github.com/FlightControl-Master/MOOSE
 
 Credit to Pikey for his Simple Group Saving and Simple Static Saving scripts, which were modified for this project: https://github.com/thebgpikester/SimpleGroupSaving
+https://github.com/thebgpikester/SimpleStaticSaving
 
 Credit to deadlyfishes/TTI dev team for their "ZEUS" marker script: https://throughtheinferno.com/
 
-https://github.com/thebgpikester/SimpleStaticSaving
+
