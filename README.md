@@ -9,7 +9,7 @@ As with nearly all scripts that generate or enable persistence in DCS World you 
 
 If you have any questions regarding this repository please join the Ravenspear Discord where you are welcome to ask questions: https://discord.gg/2DvxuKfMdM
 
-Please find below a list of modules that make up RDMB and their purpose. These are listed in order of priority of importance/development. This project is still in a very early stage, and the RDMB miz file still needs a lot of work.
+Please find below a list of modules that make up RDMB and their purpose. This project is still in a very early stage, and the RDMB miz file still needs a lot of work.
 
 # Persistence Module
 
@@ -41,6 +41,8 @@ RDMB uses several functions from the MOOSE scripting framework: https://github.c
 
 Credit to Pikey for his Simple Group Saving and Simple Static Saving scripts, which were modified for this project: https://github.com/thebgpikester/SimpleGroupSaving
 
+https://github.com/thebgpikester/SimpleStaticSaving
+
 Credit to deadlyfishes/TTI dev team for their "ZEUS" marker script: https://throughtheinferno.com/
 
-https://github.com/thebgpikester/SimpleStaticSaving
+
