@@ -9,7 +9,7 @@ As with nearly all scripts that generate or enable persistence in DCS World you 
 
 If you have any questions regarding this repository please join the Ravenspear Discord where you are welcome to ask questions: https://discord.gg/2DvxuKfMdM
 
-Please find below a list of modules that make up RDMB and their purpose. These are listed in order of priority of importance/development. This project is still in a very early stage, and the RDMB miz file still needs a lot of work.
+Please find below a list of modules that make up RDMB and their purpose. This project is still in a very early stage, and the RDMB miz file still needs a lot of work.
 
 # Persistence Module
 
