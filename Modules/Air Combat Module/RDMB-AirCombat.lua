@@ -83,5 +83,5 @@ function patrolSpawn(zoneNumber)
 
 end
 
-trigger.action.outText("RDMB Air Combat Module v1.00 Loaded!")
+trigger.action.outText("RDMB Air Combat Module v1.00 Loaded!", 5)
 timer.scheduleFunction(incursionZoneScan, nil, timer.getTime() + 5) --schedule scan of incursion zones
