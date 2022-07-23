@@ -1,5 +1,5 @@
 --Credit to Pikey, Speed & Grimes for their work on Serialising tables, included below, FlightControl for MOOSE (Required), Ghostrider+Moose community for fixing Radians instead of degrees
---The NDMB Persistence Module is a modified version of Pikey's Simple Group Saving and Simple Static Saving scripts.
+--The RDMB Persistence Module is a modified version of Pikey's Simple Group Saving and Simple Static Saving scripts.
 --https://github.com/thebgpikester/SimpleGroupSaving
 --https://github.com/thebgpikester/SimpleStaticSaving
  
@@ -126,11 +126,11 @@ end
 
 
 --SCRIPT START
-trigger.action.outText("RDMB Persistence Module v1.00 Loaded!")
+trigger.action.outText("RDMB Persistence Module v1.00 Loaded!", 5)
 
 --UNITS
 
-if file_exists("NDMB-Persistence-Units.lua") then --Script has been run before, so we need to load the save
+if file_exists("RDMB-Persistence-Units.lua") then --Script has been run before, so we need to load the save
   env.info("Unit database exists, loading from file..")
   AllGroups = SET_GROUP:New():FilterCategories({"ground","ship"}):FilterActive(true):FilterStart()
     AllGroups:ForEachGroup(function (grp)
@@ -158,10 +158,10 @@ if file_exists("NDMB-Persistence-Units.lua") then --Script has been run before, 
 
       end)
 
-  --dofile("NDMB-Persistence-Units.lua")
+  --dofile("RDMB-Persistence-Units.lua")
   SaveUnits = {}
 
-  dofile("NDMB-Persistence-Units.lua")
+  dofile("RDMB-Persistence-Units.lua")
   tempTable={}
   Spawn={}
 --RUN THROUGH THE KEYS IN THE TABLE (GROUPS)
@@ -224,11 +224,11 @@ end
 
  mismatch=0 --counter for objects in file and in table differences
 
-if file_exists("NDMB-Persistence-Statics.lua") then
+if file_exists("RDMB-Persistence-Statics.lua") then
   env.info("Statics database exists, loading from file..")
-  --dofile("NDMB-Persistence-Statics.lua")
+  --dofile("RDMB-Persistence-Statics.lua")
   SaveStatics = {}
-  SaveStatics = {dofile("NDMB-Persistence-Statics.lua")}
+  SaveStatics = {dofile("RDMB-Persistence-Statics.lua")}
 
   AllStatics = SET_STATIC:New():FilterStart()
 
@@ -340,7 +340,7 @@ function unitSave()
   end)
 
   newMissionStr = betterSerialize(SaveUnits, "SaveUnits") --save the Table as a serialised type with key SaveUnits
-  writetofile(newMissionStr, "NDMB-Persistence-Units.lua")--write the file from the above to SaveUnits.lua
+  writetofile(newMissionStr, "RDMB-Persistence-Units.lua")--write the file from the above to SaveUnits.lua
   SaveUnits={}--clear the table for a new write.
 
   timer.scheduleFunction(function() 
@@ -376,7 +376,7 @@ function staticSave()
     end)
 
   local newMissionStr = betterSerialize(SaveStatics, "SaveStatics")
-  writetofile(newMissionStr, "NDMB-Persistence-Statics.lua")
+  writetofile(newMissionStr, "RDMB-Persistence-Statics.lua")
   SaveStatics={} 
 
   timer.scheduleFunction(function() 
