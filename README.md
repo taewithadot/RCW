@@ -34,6 +34,6 @@ RDMB uses several functions from the MOOSE scripting framework: https://github.c
 
 Credit to Pikey for his Simple Group Saving and Simple Static Saving scripts, which were modified for this project: https://github.com/thebgpikester/SimpleGroupSaving
 
-Credit to deadlyfishes/TTI dev team for their "ZEUS" marker script.
+Credit to deadlyfishes/TTI dev team for their "ZEUS" marker script: https://throughtheinferno.com/
 
 https://github.com/thebgpikester/SimpleStaticSaving
