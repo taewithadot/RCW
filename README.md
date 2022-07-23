@@ -15,25 +15,25 @@ Please find below a list of modules that make up RDMB and their purpose. These a
 
 The RDMB Persistence Module saves the state of all ground units, ships and static objects in the mission. This allows a DCS server/session to be stopped and started and continued from where it was. The current version of this module only supports the saving of ground units and ships. Ships to be skipped can be added into the shipWhitelist at the top of the file. This should be used if there are ships with slots on them (eg. carrier Tomcat slots) or serious issues will occur as ships with slots cannot be respawned.
 
-Development Status: Ground & naval unit saving completed, static saving under development.
-
-# Air Combat Module
-
-The RDMB Air Combat Module is responsible for generating air patrols and strikes based on the airbases owned by each coalition. This allows for a dynamic air situation based on the current territory control. 
-
-Development Status: Enemy patrols spawn from a pre-defined pool based on friendly trespass into static incursion zones.
+**Development Status: Ground & naval unit saving completed, static saving under development.**
 
 # Armament Module
 
 The RDMB Armament Module allows for player armament and weapons loadouts to become persistent, operating from a weapons stockpile that can be either manually controlled or automatically updated by external sources. When players take off from airfields, the weapons on their aircraft are subtracted from stockpiles, and when they land, any remaining weapons are returned to the same stockpiles. If players take off with an invalid loadout, they are warned and given time to land, and if they continue to fly with the invalid loadout they are destroyed.
 
-Development Status: Full functionality on a single stockpile file, can be used to limit armament for an operation.
+**Development Status: Full functionality on a single stockpile file, can be used to limit armament for an operation.**
+
+# Air Combat Module
+
+The RDMB Air Combat Module is responsible for generating air patrols and strikes based on the airbases owned by each coalition. This allows for a dynamic air situation based on the current territory control. 
+
+**Development Status: Enemy patrols spawn from a pre-defined pool based on friendly trespass into static incursion zones.**
 
 # Ground Combat Module
 
 The RDMB Ground Combat Module allows for dynamic spawning of ground units by a game master using marker commands. In the future, it may be overhauled to allow for hands-off dynamic ground unit spawning based on territory/airbase control. This will allow for a dynamic ground situation based on the current territory control.
 
-Development Status: Completed
+**Development Status: Completed**
 
 # Credits
 
