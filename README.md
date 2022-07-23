@@ -25,7 +25,7 @@ The RDMB Armament Module allows for player armament and weapons loadouts to beco
 
 # Ground Combat Module
 
-The RDMB Ground Combat Module will allow for dynamic spawning of ground units based on the same "matrix" system used by the air combat module. This will allow for a dynamic ground situation based on the current territory control. This module does not yet have a working version.
+The RDMB Ground Combat Module allows for dynamic spawning of ground units by a game master using marker commands. In the future, it will allow for dynamic spawning of ground units based on the same "matrix" system used by the air combat module. This will allow for a dynamic ground situation based on the current territory control.
 
 
 # Credits
@@ -33,5 +33,7 @@ The RDMB Ground Combat Module will allow for dynamic spawning of ground units ba
 RDMB uses several functions from the MOOSE scripting framework: https://github.com/FlightControl-Master/MOOSE
 
 Credit to Pikey for his Simple Group Saving and Simple Static Saving scripts, which were modified for this project: https://github.com/thebgpikester/SimpleGroupSaving
+
+Credit to deadlyfishes/TTI dev team for their "ZEUS" marker script.
 
 https://github.com/thebgpikester/SimpleStaticSaving
