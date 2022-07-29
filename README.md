@@ -22,9 +22,9 @@ The RCW Armament Module allows for player armament and weapons loadouts to becom
 
 Enemy patrols spawn from a pre-defined pool based on friendly trespass into static incursion zones. This can be customised to allow for different pools of aircraft to be scrambled depending on the airbase, as well as what distance to scramble a patrol, as well as which airbases will be allowed to field patrols.
 
-###### Dynamic Ground Unit Spawning
+###### Game Master Script (Heavy WIP)
 
-RCW features dynamic spawning of ground units by a game master using marker commands. In the future, it may be overhauled to allow for hands-off dynamic ground unit spawning based on territory/airbase control. This will allow for a dynamic ground situation based on the current territory control.
+Game masters are able to spawn air and ground units into the mission based on predefined presets.
 
 # To Do
 
