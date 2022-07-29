@@ -28,7 +28,7 @@ RCW features dynamic spawning of ground units by a game master using marker comm
 
 # To Do
 
-- Dynamic air unit spawning
+- Game master air unit spawning
 - Add factions, bases, aircraft spawning pools, both friendly and enemy ground units
 
 # Credits
