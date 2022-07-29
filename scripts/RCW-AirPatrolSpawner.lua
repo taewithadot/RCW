@@ -1,4 +1,4 @@
---RDMB Air Combat Module by Taerdryn
+--RCW Air Patrol Spawner by Taerdryn
 incursionZone = {}
 patrolSpawning = {}
 patrolSpawned = {}
@@ -119,5 +119,5 @@ function spawnFinisher(zoneNumber)
 
 end
 
-trigger.action.outText("RDMB Air Combat Module v1.00 Loaded!", 5)
+trigger.action.outText("RCW Air Patrol Spawner Loaded!", 5)
 timer.scheduleFunction(incursionZoneScan, nil, timer.getTime() + 1) --schedule scan of incursion zones
