@@ -33,7 +33,7 @@ RCW features dynamic spawning of ground units by a game master using marker comm
 
 # Credits
 
-RDMB uses several functions from the MOOSE scripting framework: https://github.com/FlightControl-Master/MOOSE
+RCW uses several functions from the MOOSE scripting framework: https://github.com/FlightControl-Master/MOOSE
 
 Credit to Pikey for his Simple Group Saving and Simple Static Saving scripts, which were modified for this project: https://github.com/thebgpikester/SimpleGroupSaving
 
