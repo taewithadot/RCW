@@ -13,6 +13,12 @@ Template_A2A_Helo_Zeus_CUSTOM = {}
 
 randInit = math.random(1,100000)
 
+A2A_HELO_ZEUS = SPAWN:NewWithAlias( "A2A_Spawn_Init_HELO_ZEUS", "A2A_Spawn_Init_HELO_ZEUS" )
+	:InitRandomizeTemplate( Template_A2A_Helo_Zeus )
+	
+A2A_ZEUS = SPAWN:New("A2A_Spawn_Init_ZEUS")
+	:InitRandomizeTemplate( Template_A2A_Zeus )
+
 A2G_ZEUS = SPAWN:NewWithAlias("A2G_Init", "A2G_Spawn_Init_ZEUS_"..randInit)
 	:InitRandomizeTemplate( Template_A2G_Zeus )
 	:InitHeading(0, 360)
