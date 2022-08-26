@@ -12,7 +12,7 @@ GMFunc.PW = nil --Here you can specify a password that has to be entered into th
 
 --Spawn command options
 GMFunc.DefaultSkill = "Random" --Default skill of units spawned via the "-s" command, possible values are: Random, Excellent, High, Good, Average. Does NOT override the skill set by the parameter of the "-s" command.
-GMFunc.DefaultCountry = nil --All units spawned via the "-s" and "-sta" command will be spawned as units of the country specified here. For countrynames see documentation. Does NOT override the country set by the parameter of the "-s" command.
+GMFunc.DefaultCountry = "CJTF_RED" --All units spawned via the "-s" and "-sta" command will be spawned as units of the country specified here. For countrynames see documentation. Does NOT override the country set by the parameter of the "-s" command.
                             --Nil defaults to USAF aggressors for all spawns that are included in Gamemaster_Templates. For all other spawns nil defaults to the country set up in the ME. 
 GMFunc.EPLRS = true --Toggles EPLRS (Datalink) for Groups spawned via the "-s" command, true = on, false = off. Gets overriden by the "keep tasking" parameter
 GMFunc.DefaultROE = "free" --Set a default ROE that all Groups spawned via the "-s" command will obey: "free" = weapons free, "hold" = hold fire, "return" = return fire
