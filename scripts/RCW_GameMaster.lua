@@ -2516,7 +2516,7 @@ function GMFunc.Spawn(param1, param2, param3, param4, param5, param6, param7, mc
   
   if GMFunc.Spawns[param1] == nil 
     
-    then GMFunc.Spawns[param1] = SPAWN:NewWithAlias(param1, randInit)
+    then GMFunc.Spawns[param1] = SPAWN:NewWithAlias(param1, param1..randInit)
   
   end
   
