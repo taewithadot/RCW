@@ -138,26 +138,26 @@ function incursionZoneHandlerNew() -- WIP
 					trigger.action.outText("Zone "..i.." Heat: "..zoneHeat[i].."/720",5) --DEBUG
 				end
 
-				if (patrolObjLow[i] ~= nil and zoneHeat[i] > 1 and patrolGrpLow[i]:CountAliveUnits() == 0) or (patrolObjLow[i] == nil and zoneHeat[i] > 1) then --check if a patrol has ever been spawned here
+			end
 
-					patrolAliveLow[i] = 0
-					patrolSpawnNew(i,1)
+			if (patrolObjLow[i] ~= nil and zoneHeat[i] > 1 and patrolGrpLow[i]:CountAliveUnits() == 0) or (patrolObjLow[i] == nil and zoneHeat[i] > 1) then --check if a patrol has ever been spawned here
 
-				end
+				patrolAliveLow[i] = 0
+				patrolSpawnNew(i,1)
 
-				if (patrolObjMed[i] ~= nil and zoneHeat[i] > 1 and patrolGrpMed[i]:CountAliveUnits() == 0 and zoneGroupCount[i] > 1) or (patrolObjMed[i] == nil and zoneHeat[i] > 1 and zoneGroupCount[i] > 1) then --check if a patrol has ever been spawned here
+			end
 
-					patrolAliveMed[i] = 0
-					patrolSpawnNew(i,2)
+			if (patrolObjMed[i] ~= nil and zoneHeat[i] > 1 and patrolGrpMed[i]:CountAliveUnits() == 0 and zoneGroupCount[i] > 1) or (patrolObjMed[i] == nil and zoneHeat[i] > 1 and zoneGroupCount[i] > 1) then --check if a patrol has ever been spawned here
 
-				end
+				patrolAliveMed[i] = 0
+				patrolSpawnNew(i,2)
 
-				if (patrolObjHigh[i] ~= nil and zoneHeat[i] > 1 and patrolGrpHigh[i]:CountAliveUnits() == 0 and zoneGroupCount[i] > 2) or (patrolObjHigh[i] == nil and zoneHeat[i] > 1 and zoneGroupCount[i] > 2) then --check if a patrol has ever been spawned here
+			end
 
-					patrolAliveHigh[i] = 0
-					patrolSpawnNew(i,3)
+			if (patrolObjHigh[i] ~= nil and zoneHeat[i] > 1 and patrolGrpHigh[i]:CountAliveUnits() == 0 and zoneGroupCount[i] > 2) or (patrolObjHigh[i] == nil and zoneHeat[i] > 1 and zoneGroupCount[i] > 2) then --check if a patrol has ever been spawned here
 
-				end
+				patrolAliveHigh[i] = 0
+				patrolSpawnNew(i,3)
 
 			end
 
