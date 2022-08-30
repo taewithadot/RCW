@@ -38,6 +38,6 @@ Credit to Pikey for his Simple Group Saving and Simple Static Saving scripts, wh
 
 https://github.com/thebgpikester/SimpleStaticSaving
 
-Credit to deadlyfishes/TTI dev team for their "ZEUS" marker script: https://throughtheinferno.com/
+Credit to CakeSorbus for his Enhanced Gamemaster Script: https://forum.dcs.world/topic/244688-enhanced-gamemaster-script-zeus-but-for-dcs/
 
 
