@@ -1,15 +1,17 @@
 --RCW Air Patrol Spawner by Taerdryn
+
 incursionZone = {}
---patrolSpawning = {}
---patrolSpawned = {}
+incursionZoneAirbase = {}
 
 patrolObjLow = {}
 patrolObjMed = {}
 patrolObjHigh = {}
+supportObj = {{}}
 
 patrolGrpLow = {}
 patrolGrpMed = {}
 patrolGrpHigh = {}
+supportGrp = {{}}
 
 patrolAliveLow = {}
 patrolAliveMed = {}
@@ -17,147 +19,137 @@ patrolAliveHigh = {}
 
 zoneHeat = {}
 
---zoneCount = 18 --Specify how many zones are in the mission here. THIS MUST BE EXACTLY THE NUMBER OF INCURSION ZONES IN THE MIZ!
---patrolMinSpawnTime = 300 --Specify minimum spawn time for a patrol when a friendly enters an incursion zone.
---patrolMaxSpawnTime = 900 --Specify maximum spawn time for a patrol when a friendly enters an incursion zone.
+-- THE FOLLOWING PARAMETERS SECTION IS INCLUDED IN THE MIZ FOR USER TO CONFIGURE, AND AS SUCH IS COMMENTED OUT HERE --
+
+--[[
+--Parameters that can be customised depending on mission setup
+
+zoneCount = 19 --Specify how many zones are in the mission here. THIS MUST BE EXACTLY THE NUMBER OF INCURSION ZONES IN THE MIZ!
 
 --Spawn pool for each zone. Make sure to set to the correct amount based on how many groups you make for each zone.
---zoneGroupCount[1] = 25
---zoneGroupCount[2] = 25
---zoneGroupCount[3] = 25
---zoneGroupCount[4] = 25
---zoneGroupCount[5] = 25
---zoneGroupCount[6] = 25
---zoneGroupCount[7] = 25
---zoneGroupCount[8] = 25
---zoneGroupCount[9] = 25
---zoneGroupCount[10] = 25
---zoneGroupCount[11] = 25
---zoneGroupCount[12] = 25
---zoneGroupCount[13] = 25
---zoneGroupCount[14] = 25
---zoneGroupCount[15] = 25
---zoneGroupCount[16] = 25
---zoneGroupCount[17] = 25
---zoneGroupCount[18] = 25
---zoneGroupCount[19] = 25
+zoneGroupCount = {}
+zoneGroupCount[5] = 3
+zoneGroupCount[6] = 2
+zoneGroupCount[7] = 9
+
+
+--define zoneSupportAircraft with a number for a zone if there are support aircraft such as AWACS or tankers. The number should be the same as the number of support aircraft defined for that zone.
+
+zoneSupportAircraft = {}
+zoneSupportAircraft[1] = 2
+
+--Define the side that a zone's support aircraft belong to, to avoid them spawning if the airbase ownership changes side. 1 for red, 2 for blue.
+
+zoneSupportSide = {}
+zoneSupportSide[1] = 2
+
+]]--
+
+
 
 
 --initialise incursion zone tables and patrol spawn status
-
 for i = 1, zoneCount do
 
 	incursionZone[i] = ZONE:FindByName("IZ"..i) --enumerate zone list based on zoneCount parameter
-	--patrolSpawning[i] = false
-	--patrolSpawned[i] = false --set all patrol spawns to false as mission has just started
 
-end
+	if zoneGroupCount[i] == nil then
 
-
-
---[[
-function incursionZoneScan()
-
-	local randSpawnTime = math.random(patrolMinSpawnTime, patrolMaxSpawnTime)
-
-	for i = 1, zoneCount do
-
-		local coord=incursionZone[i]:GetCoordinate() --getCoordinate of each incursionZone
-		local airbase=coord:GetClosestAirbase() --find closest airbase to coordinate
-		local coalition = airbase:GetCoalition() --get coalition of closest airbase to zone
-		--trigger.action.outText("Closest airbase is " .. airbase:GetName(), 5)
-
-		if coalition == 1 then --if closest airbase is enemy
-			
-			incursionZone[i]:Scan({Object.Category.UNIT},{Unit.Category.AIRPLANE}) --scan each incursionZone for planes
-
-			if incursionZone[i]:IsNoneInZoneOfCoalition(2) == false then --if any friendlies are in zone
-				if zoneHeat[i] == nil then
-					zoneHeat[i] = 1
-					trigger.action.outText("Zone "..i.." Heat: 1/720",5) --DEBUG
-				elseif zoneHeat[i] < 720 then
-					zoneHeat[i] = zoneHeat[i] + 1
-					trigger.action.outText("Zone "..i.." Heat: "..zoneHeat[i].."/720",5) --DEBUG
-				end
-				if patrolObj[i] ~= nil then --check if a patrol has ever been spawned here
-
-					trigger.action.outText("Existing patrol object found with ".. patrolGroup[i]:CountAliveUnits() .. " alive units.",5) --DEBUG
-
-					if patrolGroup[i]:CountAliveUnits() == 0 and patrolSpawning[i] == false then --if nothing is alive in patrol
-
-						trigger.action.outText("PATROL DEAD", 5) --DEBUG
-						patrolSpawned[i] = false --then it is not spawned
-
-					end
-
-					if patrolSpawning[i] == false and patrolSpawned[i] == false then --if patrol not currently spawning, and is not already spawned
-
-						trigger.action.outText("Nothing alive on existing patrol, scheduling another one to spawn in ." .. randSpawnTime .. " seconds.", 5) --DEBUG
-						patrolSpawning[i] = true --set patrol to spawning state
-						timer.scheduleFunction(patrolSpawn, i, timer.getTime() + randSpawnTime) --schedule patrol to spawn
-
-					end
-
-				elseif patrolSpawning[i] == false then --if patrol has never been spawned, make sure initial spawn is not scheduled
-					trigger.action.outText("No previous patrol object found, creating new patrol object and spawning patrol in " .. randSpawnTime .. " seconds.", 5) --DEBUG
-					patrolSpawning[i] = true --set patrol to spawning state
-					timer.scheduleFunction(patrolSpawn, i, timer.getTime() + randSpawnTime) --schedule patrol to spawn
-
-				end
-
-			end
-
-		end
+		zoneGroupCount[i] = 0 -- set any unset zones to 0 spawn count to avoid problems with zone handler function
 
 	end
 
-	timer.scheduleFunction(incursionZoneScan, nil, timer.getTime() + scanTime) --reschedule scan of incursion zones
-
 end
-]]--
 
-function incursionZoneHandlerNew() -- WIP
+
+function incursionZoneHandler()
 
 	for i = 1, zoneCount do
 
 		local coord=incursionZone[i]:GetCoordinate() --getCoordinate of each incursionZone
 		local airbase=coord:GetClosestAirbase() --find closest airbase to coordinate
 		local coalition = airbase:GetCoalition() --get coalition of closest airbase to zone
-		--trigger.action.outText("Closest airbase is " .. airbase:GetName(), 5)
+		--trigger.action.outText("Closest airbase is " .. airbase:GetName(), 5) --DEBUG
 
 		if coalition == 1 then --if closest airbase is enemy
 			
 			incursionZone[i]:Scan({Object.Category.UNIT},{Unit.Category.AIRPLANE}) --scan each incursionZone for planes
 
-			if incursionZone[i]:IsNoneInZoneOfCoalition(2) == false then --if any friendlies are in zone
-				if zoneHeat[i] == nil then
-					zoneHeat[i] = 1
-					trigger.action.outText("Zone "..i.." Heat: 1/720",5) --DEBUG
-				elseif zoneHeat[i] < 720 then
-					zoneHeat[i] = zoneHeat[i] + 1
-					trigger.action.outText("Zone "..i.." Heat: "..zoneHeat[i].."/720",5) --DEBUG
-				end
+
+			if zoneHeat[i] == nil then --if any friendlies are in zone
+
+				zoneHeat[i] = 0
 
 			end
+
+			if incursionZone[i]:IsNoneInZoneOfCoalition(2) == false and zoneHeat[i] < 1080 then
+
+				zoneHeat[i] = zoneHeat[i] + 1
+				trigger.action.outText("Zone "..i.." Heat: "..zoneHeat[i].."/1080",5) --DEBUG
+
+			end
+
+			if incursionZone[i]:IsNoneInZoneOfCoalition(2) == true and zoneHeat[i] > 1 then --if any friendlies are in zone
+
+					zoneHeat[i] = zoneHeat[i] - 1
+					trigger.action.outText("Zone "..i.." Heat: "..zoneHeat[i].."/1080",5) --DEBUG
+
+			end
+
 
 			if (patrolObjLow[i] ~= nil and zoneHeat[i] > 1 and patrolGrpLow[i]:CountAliveUnits() == 0) or (patrolObjLow[i] == nil and zoneHeat[i] > 1) then --check if a patrol has ever been spawned here
 
 				patrolAliveLow[i] = 0
-				patrolSpawnNew(i,1)
+				patrolSpawner(i,1)
 
 			end
 
-			if (patrolObjMed[i] ~= nil and zoneHeat[i] > 1 and patrolGrpMed[i]:CountAliveUnits() == 0 and zoneGroupCount[i] > 1) or (patrolObjMed[i] == nil and zoneHeat[i] > 1 and zoneGroupCount[i] > 1) then --check if a patrol has ever been spawned here
+			if (patrolObjMed[i] ~= nil and zoneHeat[i] > 360 and patrolGrpMed[i]:CountAliveUnits() == 0 and zoneGroupCount[i] > 1) or (patrolObjMed[i] == nil and zoneHeat[i] > 360 and zoneGroupCount[i] > 1) then --check if a patrol has ever been spawned here
 
 				patrolAliveMed[i] = 0
-				patrolSpawnNew(i,2)
+				patrolSpawner(i,2)
 
 			end
 
-			if (patrolObjHigh[i] ~= nil and zoneHeat[i] > 1 and patrolGrpHigh[i]:CountAliveUnits() == 0 and zoneGroupCount[i] > 2) or (patrolObjHigh[i] == nil and zoneHeat[i] > 1 and zoneGroupCount[i] > 2) then --check if a patrol has ever been spawned here
+			if (patrolObjHigh[i] ~= nil and zoneHeat[i] > 720 and patrolGrpHigh[i]:CountAliveUnits() == 0 and zoneGroupCount[i] > 2) or (patrolObjHigh[i] == nil and zoneHeat[i] > 720 and zoneGroupCount[i] > 2) then --check if a patrol has ever been spawned here
 
 				patrolAliveHigh[i] = 0
-				patrolSpawnNew(i,3)
+				patrolSpawner(i,3)
+
+			end
+
+		end
+
+		if zoneSupportAircraft[i] ~= nil then
+
+			for j = 1, zoneSupportAircraft[i] do
+
+				if zoneSupportSide[i] ~= nil then
+
+					trigger.action.outText("Airbase coalition is " .. coalition .. " and Support Side is " .. zoneSupportSide[i], 5)
+
+				end
+
+				if zoneSupportSide[i] ~= nil and zoneSupportSide[i] == coalition then
+
+					if supportObj[i][j] == nil then
+
+						trigger.action.outText("Support aircraft " .. j .. " for zone " .. i .. " has yet to be initialised, spawning now.", 5) --DEBUG
+						supportSpawner(i,j)
+
+					elseif supportGrp[i][j]:CountAliveUnits() == 0 then
+
+						trigger.action.outText("It looks like support aircraft " .. j " for zone " .. i .. " has been despawned or destroyed, respawning now", 5) --DEBUG
+						supportSpawner(i,j)
+					end
+
+				else
+
+					trigger.action.outText("There are support aircraft in zone " .. i .. ", but not for the coalition holding the airbase", 5)
+
+				end
+
+
 
 			end
 
@@ -165,34 +157,12 @@ function incursionZoneHandlerNew() -- WIP
 
 	end
 
-	timer.scheduleFunction(incursionZoneHandlerNew, nil, timer.getTime() + scanTime) --reschedule scan of incursion zones
+	timer.scheduleFunction(incursionZoneHandler, nil, timer.getTime() + 10) --reschedule scan of incursion zones
 
 end
 
---[[
-function patrolSpawn(zoneNumber)
 
-	if zoneGroupCount[zoneNumber] > 0 then
-		local patrolToSpawn = math.random(1, zoneGroupCount[zoneNumber]) --select a random patrol group to spawn
-		trigger.action.outText("Random number was "..patrolToSpawn, 5) --DEBUG
-		trigger.action.outText("Spawning " .. "z" .. zoneNumber .. "p" .. patrolToSpawn, 5) --DEBUG
-		patrolObj[zoneNumber] = SPAWN:New("z" .. zoneNumber .. "p" .. patrolToSpawn) --create spawn object for patrol group
-		patrolObj[zoneNumber]:InitCleanUp(120)
-		patrolGroup[zoneNumber] = patrolObj[zoneNumber]:Spawn() --spawn patrol group
-		patrolSpawned[zoneNumber] = true --set spawned state to true
-		timer.scheduleFunction(spawnFinisher, zoneNumber, timer.getTime() + 5) --give time for units to spawn to stop rare clashes with scan code
-		timer.scheduleFunction(stuckCheck, patrolGroup[zoneNumber], timer.getTime() + 300) -- Schedule stuck check to happen in 5 minutes
-
-	else
-
-		trigger.action.outText("No patrol groups defined for this zone!", 5) --DEBUG
-
-	end
-end
-]]--
-
-
-function patrolSpawnNew(zoneNumber,heat) -- WIP
+function patrolSpawner(zoneNumber,heat)
 
 	lowToSpawn = math.random(1, zoneGroupCount[zoneNumber])
 	medToSpawn = math.random(1, zoneGroupCount[zoneNumber])
@@ -261,28 +231,31 @@ function patrolSpawnNew(zoneNumber,heat) -- WIP
 
 end
 
---[[
-function spawnFinisher(zoneNumber)
 
-	patrolSpawning[zoneNumber] = false --set spawning state to false
-	trigger.action.outText("Spawn finishing for zone " .. zoneNumber .. ", spawning state is " .. tostring(patrolSpawning[zoneNumber]), 5) --DEBUG
+function supportSpawner(zoneNumber, acNumber)
+
+	trigger.action.outText("Spawning support aircraft " .. acNumber .. " for zone ".. zoneNumber, 5)
+	supportObj[zoneNumber][acNumber] = SPAWN:New("z" .. zoneNumber .. "s" .. acNumber)
+	supportObj[zoneNumber][acNumber]:InitCleanUp(300)
+	supportGrp[zoneNumber][acNumber] = supportObj[zoneNumber][acNumber]:Spawn()
+	timer.scheduleFunction(stuckCheck,supportGrp[zoneNumber][acNumber], timer.getTime() + 300)
 
 end
-]]--
 
 
 function stuckCheck(groupToCheck)
 
 	if groupToCheck:AllOnGround() and groupToCheck:GetVelocityKNOTS() < 3 then
-		trigger.action.outText("Stuck check complete - all units still on ground, destroying group", 5) --DEBUG
+
+		trigger.action.outText("Stuck check complete - all units still on ground and not moving, destroying group", 5) --DEBUG
 		groupToCheck:Destroy(true)
 		return
+
 	end
 	trigger.action.outText("Stuck check complete - some or all group units are airborne or on the move.", 5) --DEBUG
 
 end
 
 
-
 trigger.action.outText("RCW Air Patrol Spawner Loaded!", 5)
-timer.scheduleFunction(incursionZoneHandlerNew, nil, timer.getTime() + 1) --schedule scan of incursion zones
+timer.scheduleFunction(incursionZoneHandler, nil, timer.getTime() + 1) --schedule scan of incursion zones
