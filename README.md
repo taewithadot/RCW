@@ -4,9 +4,9 @@ Ravenspear Contract Wars (RCW) is a DCS mission being created for the Ravenspear
 
 This repository is mainly used for organisation and staging purposes when it comes to the scripts involved.
 
-Currently the mission is in a non-functioning state as it is missing an initial setup as well as spawning pools for aircraft.
+Currently the mission is in a non-functioning state as it is missing a number of key features.
 
-If you have any questions regarding this repository please join the Ravenspear Discord where you are welcome to ask questions: https://discord.gg/2DvxuKfMdM
+If you have any questions regarding this repository, please join the Ravenspear Discord where you are welcome to ask questions: https://discord.gg/2DvxuKfMdM
 
 # Current Mission Features
 
@@ -38,6 +38,6 @@ Credit to Pikey for his Simple Group Saving and Simple Static Saving scripts, wh
 
 https://github.com/thebgpikester/SimpleStaticSaving
 
-Credit to deadlyfishes/TTI dev team for their "ZEUS" marker script: https://throughtheinferno.com/
+Credit to CakeSorbus for his Enhanced Gamemaster Script: https://forum.dcs.world/topic/244688-enhanced-gamemaster-script-zeus-but-for-dcs/
 
 
