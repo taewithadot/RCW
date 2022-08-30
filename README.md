@@ -24,12 +24,11 @@ Enemy patrols spawn from a pre-defined pool based on friendly trespass into stat
 
 ###### Game Master Script (Heavy WIP)
 
-Game masters are able to spawn air and ground units into the mission based on predefined presets.
+Human game masters are able to spawn air and ground units into the mission based on predefined presets.
 
 # To Do
 
-- Game master air unit spawning
-- Add factions, bases, aircraft spawning pools, both friendly and enemy ground units
+Additional features are being developed before a v1.00 of the mission is "released". This includes more depth to the air spawning system, more ground templates for human game masters to use as well as documentation, and finally air patrol spawn definitions for the Air Patrol Spawner.
 
 # Credits
 
