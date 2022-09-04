@@ -1,17 +1,16 @@
 --RCW Air Patrol Spawner by Taerdryn
 
 incursionZone = {}
-incursionZoneAirbase = {}
 
 patrolObjLow = {}
 patrolObjMed = {}
 patrolObjHigh = {}
-supportObj = {{}}
+supportObj = {}
 
 patrolGrpLow = {}
 patrolGrpMed = {}
 patrolGrpHigh = {}
-supportGrp = {{}}
+supportGrp = {}
 
 patrolAliveLow = {}
 patrolAliveMed = {}
@@ -132,6 +131,19 @@ function incursionZoneHandler()
 
 				if zoneSupportSide[i] ~= nil and zoneSupportSide[i] == coalition then
 
+					if supportObj[i] == nil then
+
+						supportObj[i] = {}
+
+					end
+
+
+					if supportGrp[i] == nil then
+
+						supportGrp[i] = {}
+
+					end
+
 					if supportObj[i][j] == nil then
 
 						trigger.action.outText("Support aircraft " .. j .. " for zone " .. i .. " has yet to be initialised, spawning now.", 5) --DEBUG
@@ -148,8 +160,6 @@ function incursionZoneHandler()
 					trigger.action.outText("There are support aircraft in zone " .. i .. ", but not for the coalition holding the airbase", 5)
 
 				end
-
-
 
 			end
 
