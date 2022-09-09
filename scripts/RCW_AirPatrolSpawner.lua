@@ -18,6 +18,8 @@ patrolAliveHigh = {}
 
 zoneHeat = {}
 
+scriptDebug = false
+
 -- THE FOLLOWING PARAMETERS SECTION IS INCLUDED IN THE MIZ FOR USER TO CONFIGURE, AND AS SUCH IS COMMENTED OUT HERE --
 
 --[[
@@ -84,14 +86,14 @@ function incursionZoneHandler()
 			if incursionZone[i]:IsNoneInZoneOfCoalition(2) == false and zoneHeat[i] < 1080 then
 
 				zoneHeat[i] = zoneHeat[i] + 1
-				trigger.action.outText("Zone "..i.." Heat: "..zoneHeat[i].."/1080",5) --DEBUG
+				if scriptDebug = true then trigger.action.outText("Zone "..i.." Heat: "..zoneHeat[i].."/1080",5) end--DEBUG
 
 			end
 
 			if incursionZone[i]:IsNoneInZoneOfCoalition(2) == true and zoneHeat[i] > 1 then --if any friendlies are in zone
 
 					zoneHeat[i] = zoneHeat[i] - 1
-					trigger.action.outText("Zone "..i.." Heat: "..zoneHeat[i].."/1080",5) --DEBUG
+					if scriptDebug = true then trigger.action.outText("Zone "..i.." Heat: "..zoneHeat[i].."/1080",5) end --DEBUG
 
 			end
 
@@ -125,7 +127,7 @@ function incursionZoneHandler()
 
 				if zoneSupportSide[i] ~= nil then
 
-					trigger.action.outText("Airbase coalition is " .. coalition .. " and Support Side is " .. zoneSupportSide[i], 5)
+					if scriptDebug = true then trigger.action.outText("Airbase coalition is " .. coalition .. " and Support Side is " .. zoneSupportSide[i], 5) end --DEBUG
 
 				end
 
@@ -146,18 +148,18 @@ function incursionZoneHandler()
 
 					if supportObj[i][j] == nil then
 
-						trigger.action.outText("Support aircraft " .. j .. " for zone " .. i .. " has yet to be initialised, spawning now.", 5) --DEBUG
+						if scriptDebug = true then trigger.action.outText("Support aircraft " .. j .. " for zone " .. i .. " has yet to be initialised, spawning now.", 5) end --DEBUG
 						supportSpawner(i,j)
 
 					elseif supportGrp[i][j]:CountAliveUnits() == 0 then
 
-						trigger.action.outText("It looks like support aircraft " .. j " for zone " .. i .. " has been despawned or destroyed, respawning now", 5) --DEBUG
+						if scriptDebug = true then trigger.action.outText("It looks like support aircraft " .. j " for zone " .. i .. " has been despawned or destroyed, respawning now", 5) end --DEBUG
 						supportSpawner(i,j)
 					end
 
 				else
 
-					trigger.action.outText("There are support aircraft in zone " .. i .. ", but not for the coalition holding the airbase", 5)
+					if scriptDebug = true then trigger.action.outText("There are support aircraft in zone " .. i .. ", but not for the coalition holding the airbase", 5) end
 
 				end
 
@@ -202,10 +204,10 @@ function patrolSpawner(zoneNumber,heat)
 
 	if zoneGroupCount[zoneNumber] > 0 and skipLowSpawn == false and heat == 1 then
 
-		trigger.action.outText("Spawning Low Heat Patrol..", 5)
+		if scriptDebug = true then trigger.action.outText("Spawning Low Heat Patrol..", 5) end --DEBUG
 		patrolAliveLow[zoneNumber] = lowToSpawn --select a random patrol group to spawn
-		trigger.action.outText("Random number was ".. patrolAliveLow[zoneNumber], 5) --DEBUG
-		trigger.action.outText("Spawning " .. "z" .. zoneNumber .. "p" .. patrolAliveLow[zoneNumber], 5) --DEBUG
+		if scriptDebug = true then trigger.action.outText("Random number was ".. patrolAliveLow[zoneNumber], 5) end --DEBUG
+		if scriptDebug = true then trigger.action.outText("Spawning " .. "z" .. zoneNumber .. "p" .. patrolAliveLow[zoneNumber], 5) end --DEBUG
 		patrolObjLow[zoneNumber] = SPAWN:New("z" .. zoneNumber .. "p" .. patrolAliveLow[zoneNumber]) --create spawn object for patrol group
 		patrolObjLow[zoneNumber]:InitCleanUp(120)
 		patrolGrpLow[zoneNumber] = patrolObjLow[zoneNumber]:Spawn() --spawn patrol group
@@ -215,10 +217,10 @@ function patrolSpawner(zoneNumber,heat)
 
 	if zoneGroupCount[zoneNumber] > 0 and skipMedSpawn == false and heat == 2 then
 
-		trigger.action.outText("Spawning Med Heat Patrol..", 5)
+		if scriptDebug = true then trigger.action.outText("Spawning Med Heat Patrol..", 5) end
 		patrolAliveMed[zoneNumber] = medToSpawn --select a random patrol group to spawn
-		trigger.action.outText("Random number was "..patrolAliveMed[zoneNumber], 5) --DEBUG
-		trigger.action.outText("Spawning " .. "z" .. zoneNumber .. "p" .. patrolAliveMed[zoneNumber], 5) --DEBUG
+		if scriptDebug = true then trigger.action.outText("Random number was "..patrolAliveMed[zoneNumber], 5) end--DEBUG
+		if scriptDebug = true then trigger.action.outText("Spawning " .. "z" .. zoneNumber .. "p" .. patrolAliveMed[zoneNumber], 5) end --DEBUG
 		patrolObjMed[zoneNumber] = SPAWN:New("z" .. zoneNumber .. "p" .. patrolAliveMed[zoneNumber]) --create spawn object for patrol group
 		patrolObjMed[zoneNumber]:InitCleanUp(120)
 		patrolGrpMed[zoneNumber] = patrolObjMed[zoneNumber]:Spawn() --spawn patrol group
@@ -228,10 +230,10 @@ function patrolSpawner(zoneNumber,heat)
 
 	if zoneGroupCount[zoneNumber] > 0 and skipHighSpawn == false and heat == 3 then
 
-		trigger.action.outText("Spawning High Heat Patrol..", 5)
+		if scriptDebug = true then trigger.action.outText("Spawning High Heat Patrol..", 5) end --DEBUG
 		patrolAliveHigh[zoneNumber] = highToSpawn --select a random patrol group to spawn
-		trigger.action.outText("Random number was "..patrolAliveHigh[zoneNumber], 5) --DEBUG
-		trigger.action.outText("Spawning " .. "z" .. zoneNumber .. "p" .. patrolAliveHigh[zoneNumber], 5) --DEBUG
+		if scriptDebug = true then trigger.action.outText("Random number was "..patrolAliveHigh[zoneNumber], 5) end --DEBUG
+		if scriptDebug = true then trigger.action.outText("Spawning " .. "z" .. zoneNumber .. "p" .. patrolAliveHigh[zoneNumber], 5) end --DEBUG
 		patrolObjHigh[zoneNumber] = SPAWN:New("z" .. zoneNumber .. "p" .. patrolAliveHigh[zoneNumber]) --create spawn object for patrol group
 		patrolObjHigh[zoneNumber]:InitCleanUp(120)
 		patrolGrpHigh[zoneNumber] = patrolObjHigh[zoneNumber]:Spawn() --spawn patrol group
@@ -244,7 +246,7 @@ end
 
 function supportSpawner(zoneNumber, acNumber)
 
-	trigger.action.outText("Spawning support aircraft " .. acNumber .. " for zone ".. zoneNumber, 5)
+	if scriptDebug = true then trigger.action.outText("Spawning support aircraft " .. acNumber .. " for zone ".. zoneNumber, 5) end --DEBUG
 	supportObj[zoneNumber][acNumber] = SPAWN:New("z" .. zoneNumber .. "s" .. acNumber)
 	supportObj[zoneNumber][acNumber]:InitCleanUp(300)
 	supportGrp[zoneNumber][acNumber] = supportObj[zoneNumber][acNumber]:Spawn()
@@ -257,12 +259,12 @@ function stuckCheck(groupToCheck)
 
 	if groupToCheck:AllOnGround() and groupToCheck:GetVelocityKNOTS() < 3 then
 
-		trigger.action.outText("Stuck check complete - all units still on ground and not moving, destroying group", 5) --DEBUG
+		if scriptDebug = true then trigger.action.outText("Stuck check complete - all units still on ground and not moving, destroying group", 5) end --DEBUG
 		groupToCheck:Destroy(true)
 		return
 
 	end
-	trigger.action.outText("Stuck check complete - some or all group units are airborne or on the move.", 5) --DEBUG
+	if scriptDebug = true then trigger.action.outText("Stuck check complete - some or all group units are airborne or on the move.", 5) end --DEBUG
 
 end
 
