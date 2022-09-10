@@ -18,8 +18,6 @@ patrolAliveHigh = {}
 
 zoneHeat = {}
 
-scriptDebug = false
-
 -- THE FOLLOWING PARAMETERS SECTION IS INCLUDED IN THE MIZ FOR USER TO CONFIGURE, AND AS SUCH IS COMMENTED OUT HERE --
 
 --[[
@@ -53,6 +51,7 @@ zoneSupportSide[1] = 2
 for i = 1, zoneCount do
 
 	incursionZone[i] = ZONE:FindByName("IZ"..i) --enumerate zone list based on zoneCount parameter
+	if scriptDebug == true then trigger.action.outText("Zone " .. i .. " radius is set to " .. incursionZone[i]:GetRadius(),5) end --DEBUG
 
 	if zoneGroupCount[i] == nil then
 
@@ -70,7 +69,8 @@ function incursionZoneHandler()
 		local coord=incursionZone[i]:GetCoordinate() --getCoordinate of each incursionZone
 		local airbase=coord:GetClosestAirbase() --find closest airbase to coordinate
 		local coalition = airbase:GetCoalition() --get coalition of closest airbase to zone
-		--trigger.action.outText("Closest airbase is " .. airbase:GetName(), 5) --DEBUG
+		
+		if scriptDebug == true then trigger.action.outText("Closest airbase to zone " .. i .. " is " .. airbase:GetName(), 5) end--DEBUG
 
 		if coalition == 1 then --if closest airbase is enemy
 			
