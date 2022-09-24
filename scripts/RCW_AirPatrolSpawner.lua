@@ -44,7 +44,30 @@ zoneSupportSide[1] = 2
 
 ]]--
 
+function writetofile(data, file)--Function for saving to file (commonly found)
+	File = io.open(file, "w")
+	File:write(data)
+	File:close()
+end
 
+function file_exists(name) --check if the file already exists for writing
+  if lfs.attributes(name) then
+  return true
+  else
+  return false end 
+end
+
+function betterSerialize(tableToSerialize, tableName)
+
+  --tableToSerialize should be a table, and is the table that will be serialized to JSON.
+  --tableName should be a string, and will be the name of the table that is saved in JSON, and ultimately the variable name of the table when loaded back into lua
+
+    serializedTable = net.lua2json(tableToSerialize)
+    serializedTableFixQuotes = string.gsub(serializedTable, "\"", "\\\"")
+    jsonReadyToWrite = tableName .. " = net.json2lua(\"" .. serializedTableFixQuotes .. "\")"
+    return jsonReadyToWrite
+
+end
 
 
 --initialise incursion zone tables and patrol spawn status
@@ -77,42 +100,52 @@ function incursionZoneHandler()
 			incursionZone[i]:Scan({Object.Category.UNIT},{Unit.Category.AIRPLANE}) --scan each incursionZone for planes
 
 
-			if zoneHeat[i] == nil then --if any friendlies are in zone
+			if zoneHeat[tostring(i)] == nil then 
 
-				zoneHeat[i] = 0
+				if file_exists("RCW_Heat.lua") then
 
-			end
+					dofile("RCW_Heat.lua")
 
-			if incursionZone[i]:IsNoneInZoneOfCoalition(2) == false and zoneHeat[i] < 1080 then
+				end
 
-				zoneHeat[i] = zoneHeat[i] + 1
-				if scriptDebug == true then trigger.action.outText("Zone "..i.." Heat: "..zoneHeat[i].."/1080",5) end--DEBUG
+				if zoneHeat[tostring(i)] == nil then
 
-			end
+					zoneHeat[tostring(i)] = 0 -- set any unset zones to 0 spawn count to avoid problems with zone handler function
 
-			if incursionZone[i]:IsNoneInZoneOfCoalition(2) == true and zoneHeat[i] > 1 then --if any friendlies are in zone
-
-					zoneHeat[i] = zoneHeat[i] - 1
-					if scriptDebug == true then trigger.action.outText("Zone "..i.." Heat: "..zoneHeat[i].."/1080",5) end --DEBUG
+				end
 
 			end
 
+			if incursionZone[i]:IsNoneInZoneOfCoalition(2) == false and zoneHeat[tostring(i)] < 1080 then
 
-			if (patrolObjLow[i] ~= nil and zoneHeat[i] > 1 and patrolGrpLow[i]:CountAliveUnits() == 0) or (patrolObjLow[i] == nil and zoneHeat[i] > 1) then --check if a patrol has ever been spawned here
+				zoneHeat[tostring(i)] = zoneHeat[tostring(i)] + 1
+				if scriptDebug == true then trigger.action.outText("Zone "..i.." Heat: "..zoneHeat[tostring(i)].."/1080",5) end--DEBUG
+
+			end
+
+			if incursionZone[i]:IsNoneInZoneOfCoalition(2) == true and zoneHeat[tostring(i)] > 1 then --if any friendlies are in zone
+
+					zoneHeat[tostring(i)] = zoneHeat[tostring(i)] - 1
+					if scriptDebug == true then trigger.action.outText("Zone "..i.." Heat: "..zoneHeat[tostring(i)].."/1080",5) end --DEBUG
+
+			end
+
+
+			if (patrolObjLow[i] ~= nil and zoneHeat[tostring(i)] > 1 and patrolGrpLow[i]:CountAliveUnits() == 0) or (patrolObjLow[i] == nil and zoneHeat[tostring(i)] > 1) then --check if a patrol has ever been spawned here
 
 				patrolAliveLow[i] = 0
 				patrolSpawner(i,1)
 
 			end
 
-			if (patrolObjMed[i] ~= nil and zoneHeat[i] > 360 and patrolGrpMed[i]:CountAliveUnits() == 0 and zoneGroupCount[i] > 1) or (patrolObjMed[i] == nil and zoneHeat[i] > 360 and zoneGroupCount[i] > 1) then --check if a patrol has ever been spawned here
+			if (patrolObjMed[i] ~= nil and zoneHeat[tostring(i)] > 360 and patrolGrpMed[i]:CountAliveUnits() == 0 and zoneGroupCount[i] > 1) or (patrolObjMed[i] == nil and zoneHeat[tostring(i)] > 360 and zoneGroupCount[i] > 1) then --check if a patrol has ever been spawned here
 
 				patrolAliveMed[i] = 0
 				patrolSpawner(i,2)
 
 			end
 
-			if (patrolObjHigh[i] ~= nil and zoneHeat[i] > 720 and patrolGrpHigh[i]:CountAliveUnits() == 0 and zoneGroupCount[i] > 2) or (patrolObjHigh[i] == nil and zoneHeat[i] > 720 and zoneGroupCount[i] > 2) then --check if a patrol has ever been spawned here
+			if (patrolObjHigh[i] ~= nil and zoneHeat[tostring(i)] > 720 and patrolGrpHigh[i]:CountAliveUnits() == 0 and zoneGroupCount[i] > 2) or (patrolObjHigh[i] == nil and zoneHeat[tostring(i)] > 720 and zoneGroupCount[i] > 2) then --check if a patrol has ever been spawned here
 
 				patrolAliveHigh[i] = 0
 				patrolSpawner(i,3)
@@ -169,6 +202,7 @@ function incursionZoneHandler()
 
 	end
 
+	writetofile(betterSerialize(zoneHeat, "zoneHeat"), "RCW_Heat.lua")
 	timer.scheduleFunction(incursionZoneHandler, nil, timer.getTime() + 10) --reschedule scan of incursion zones
 
 end

@@ -1,60 +1,6 @@
 --Neko PMC Armament Module
 
-trigger.action.outText("RDMB Armament Module v1.00 loaded!", 10) --DEBUG
-
 UnitPunishmentImminent = {}
-
-
---[[]
-function IntegratedbasicSerialize(s)
-    if s == nil then
-      return "\"\""
-    else
-      if ((type(s) == 'number') or (type(s) == 'boolean') or (type(s) == 'function') or (type(s) == 'table') or (type(s) == 'userdata') ) then
-        return tostring(s)
-      elseif type(s) == 'string' then
-        return string.format('%q', s)
-      end
-    end
-end
-
-
-function IntegratedserializeWithCycles(name, value, saved)
-  local basicSerialize = function (o)
-    if type(o) == "number" then
-      return tostring(o)
-    elseif type(o) == "boolean" then
-      return tostring(o)
-    else -- assume it is a string
-      return IntegratedbasicSerialize(o)
-    end
-  end
-
-  local t_str = {}
-  saved = saved or {}       -- initial value
-  if ((type(value) == 'string') or (type(value) == 'number') or (type(value) == 'table') or (type(value) == 'boolean')) then
-    table.insert(t_str, name .. " = ")
-    if type(value) == "number" or type(value) == "string" or type(value) == "boolean" then
-      table.insert(t_str, basicSerialize(value) ..  "\n")
-    else
-
-      if saved[value] then    -- value already saved?
-        table.insert(t_str, saved[value] .. "\n")
-      else
-        saved[value] = name   -- save name for next time
-        table.insert(t_str, "{}\n")
-        for k,v in pairs(value) do      -- save its fields
-          local fieldname = string.format("%s[%s]", name, basicSerialize(k))
-          table.insert(t_str, IntegratedserializeWithCycles(fieldname, v, saved))
-        end
-      end
-    end
-    return table.concat(t_str)
-  else
-    return ""
-  end
-end
---]]
 
 function writetofile(data, file)--Function for saving to file (commonly found)
 	File = io.open(file, "w")
@@ -101,7 +47,7 @@ function LoadoutCheck_Takeoff:onEvent(Event)
 
 		local ammo = Event.initiator:getAmmo() --get loadout of player
 
-		dofile("stockpile_static.lua") --get current stockpile
+		dofile("RCW_Stockpile.lua") --get current stockpile
 
 		--Check for valid munitions
 
@@ -110,7 +56,7 @@ function LoadoutCheck_Takeoff:onEvent(Event)
 			local weaponType = ammo[i].desc.typeName
 			local weaponCount = ammo[i].count
 
-			if stockpile_static[weaponType] ~= nil and stockpile_static[weaponType] < weaponCount then
+			if RCW_Stockpile[weaponType] ~= nil and RCW_Stockpile[weaponType] < weaponCount then
 				UnitPunishmentImminent[Event.initiator:getName()] = true -- flag user for punishment
 				trigger.action.outText("INVALID PYLON DETECTED FOR " .. Event.initiator:getPlayerName() .. " !", 10) --DEBUG
 			end
@@ -130,16 +76,16 @@ function LoadoutCheck_Takeoff:onEvent(Event)
 			local weaponType = ammo[i].desc.typeName
 			local weaponCount = ammo[i].count
 
-			if stockpile_static[weaponType] ~= nil and stockpile_static[weaponType] >= weaponCount then
-				stockpile_static[weaponType] = stockpile_static[weaponType] - weaponCount --subtract weapon from stockpile
+			if RCW_Stockpile[weaponType] ~= nil and RCW_Stockpile[weaponType] >= weaponCount then
+				RCW_Stockpile[weaponType] = RCW_Stockpile[weaponType] - weaponCount --subtract weapon from stockpile
 				trigger.action.outText("Subtracting from stockpile..", 10) --DEBUG
 
 			end
 
 		end
 
-		stockpile_serialised = betterSerialize(stockpile_static, "stockpile_static")
-		writetofile(stockpile_serialised, "stockpile_static.lua")
+		stockpile_serialised = betterSerialize(RCW_Stockpile, "RCW_Stockpile")
+		writetofile(stockpile_serialised, "RCW_Stockpile.lua")
 			
 	end 
 end
@@ -163,15 +109,15 @@ function LoadoutCheck_Land:onEvent(Event)
 			local weaponType = ammo[i].desc.typeName
 			local weaponCount = ammo[i].count
 
-			if stockpile_static[weaponType] ~= nil then
-				stockpile_static[weaponType] = stockpile_static[weaponType] + weaponCount
+			if RCW_Stockpile[weaponType] ~= nil then
+				RCW_Stockpile[weaponType] = RCW_Stockpile[weaponType] + weaponCount
 				trigger.action.outText("Returning weapon to stockpile..", 10) --DEBUG
 			end
 
 		end
 
-	stockpile_serialised = betterSerialize(stockpile_static, "stockpile_static")
-	writetofile(stockpile_serialised, "stockpile_static.lua")
+	stockpile_serialised = betterSerialize(RCW_Stockpile, "RCW_Stockpile")
+	writetofile(stockpile_serialised, "RCW_Stockpile.lua")
 
 
 	elseif UnitPunishmentImminent[Event.initiator:getName()] == true then
@@ -181,3 +127,5 @@ function LoadoutCheck_Land:onEvent(Event)
 
 end
 world.addEventHandler(LoadoutCheck_Land)
+
+trigger.action.outText("RCW Armament Module v1.00 loaded!", 10) --DEBUG

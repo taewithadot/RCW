@@ -1,5 +1,5 @@
 --Credit to Pikey, Speed & Grimes for their work on Serialising tables, included below, FlightControl for MOOSE (Required), Ghostrider+Moose community for fixing Radians instead of degrees
---The RDMB Persistence Module is a modified version of Pikey's Simple Group Saving and Simple Static Saving scripts.
+--The RCW Persistence Module is a modified version of Pikey's Simple Group Saving and Simple Static Saving scripts.
 --https://github.com/thebgpikester/SimpleGroupSaving
 --https://github.com/thebgpikester/SimpleStaticSaving
  
@@ -7,8 +7,7 @@
 
 
 --CURRENT LIMITATIONS
---Naval Groups not Saved. If Included, there may be issues with spawned objects and Client slots where Ships have slots for aircraft/helo. 
---Possible if not a factor, or we can code in conditional ignore / whitelist for certain naval units in a later version
+--Naval Groups with Aircraft Spawns on them, cannot be saved. There is a ship whitelist below for which units to ignore in the persistence.
 
  -----------------------------------
 
@@ -45,57 +44,6 @@ function betterSerialize(tableToSerialize, tableName)
 end
 
 
---[[ OLD SERIALIZE CODE
-function IntegratedbasicSerialize(s)
-    if s == nil then
-      return "\"\""
-    else
-      if ((type(s) == 'number') or (type(s) == 'boolean') or (type(s) == 'function') or (type(s) == 'table') or (type(s) == 'userdata') ) then
-        return tostring(s)
-      elseif type(s) == 'string' then
-        return string.format('%q', s)
-      end
-    end
-end
-
-
-function IntegratedserializeWithCycles(name, value, saved)
-  local basicSerialize = function (o)
-    if type(o) == "number" then
-      return tostring(o)
-    elseif type(o) == "boolean" then
-      return tostring(o)
-    else -- assume it is a string
-      return IntegratedbasicSerialize(o)
-    end
-  end
-
-  local t_str = {}
-  saved = saved or {}       -- initial value
-  if ((type(value) == 'string') or (type(value) == 'number') or (type(value) == 'table') or (type(value) == 'boolean')) then
-    table.insert(t_str, name .. " = ")
-    if type(value) == "number" or type(value) == "string" or type(value) == "boolean" then
-      table.insert(t_str, basicSerialize(value) ..  "\n")
-    else
-
-      if saved[value] then    -- value already saved?
-        table.insert(t_str, saved[value] .. "\n")
-      else
-        saved[value] = name   -- save name for next time
-        table.insert(t_str, "{}\n")
-        for k,v in pairs(value) do      -- save its fields
-          local fieldname = string.format("%s[%s]", name, basicSerialize(k))
-          table.insert(t_str, IntegratedserializeWithCycles(fieldname, v, saved))
-        end
-      end
-    end
-    return table.concat(t_str)
-  else
-    return ""
-  end
-end
---]]
-
 function file_exists(name) --check if the file already exists for writing
   if lfs.attributes(name) then
   return true
@@ -128,11 +76,11 @@ end
 
 
 --SCRIPT START
-trigger.action.outText("RDMB Persistence Module v1.00 Loaded!", 5)
+trigger.action.outText("RCW Persistence Module v1.00 Loaded!", 5)
 
 --UNITS
 
-if file_exists("RDMB-Persistence-Units.lua") then --Script has been run before, so we need to load the save
+if file_exists("RCW_Persistence_Units.lua") then --Script has been run before, so we need to load the save
   env.info("Unit database exists, loading from file..")
   AllGroups = SET_GROUP:New():FilterCategories({"ground","ship"}):FilterActive(true):FilterStart()
     AllGroups:ForEachGroup(function (grp)
@@ -160,10 +108,10 @@ if file_exists("RDMB-Persistence-Units.lua") then --Script has been run before, 
 
       end)
 
-  --dofile("RDMB-Persistence-Units.lua")
+  --dofile("RCW-Persistence-Units.lua")
   SaveUnits = {}
 
-  dofile("RDMB-Persistence-Units.lua")
+  dofile("RCW_Persistence_Units.lua")
   tempTable={}
   Spawn={}
 --RUN THROUGH THE KEYS IN THE TABLE (GROUPS)
@@ -226,11 +174,11 @@ end
 
  mismatch=0 --counter for objects in file and in table differences
 
-if file_exists("RDMB-Persistence-Statics.lua") then
+if file_exists("RCW_Persistence_Statics.lua") then
   env.info("Statics database exists, loading from file..")
-  --dofile("RDMB-Persistence-Statics.lua")
+  --dofile("RCW-Persistence-Statics.lua")
   SaveStatics = {}
-  SaveStatics = {dofile("RDMB-Persistence-Statics.lua")}
+  SaveStatics = {dofile("RCW_Persistence_Statics.lua")}
 
   AllStatics = SET_STATIC:New():FilterStart()
 
@@ -342,7 +290,7 @@ function unitSave()
   end)
 
   newMissionStr = betterSerialize(SaveUnits, "SaveUnits") --save the Table as a serialised type with key SaveUnits
-  writetofile(newMissionStr, "RDMB-Persistence-Units.lua")--write the file from the above to SaveUnits.lua
+  writetofile(newMissionStr, "RCW_Persistence_Units.lua")--write the file from the above to SaveUnits.lua
   SaveUnits={}--clear the table for a new write.
 
   timer.scheduleFunction(function() 
@@ -378,7 +326,7 @@ function staticSave()
     end)
 
   local newMissionStr = betterSerialize(SaveStatics, "SaveStatics")
-  writetofile(newMissionStr, "RDMB-Persistence-Statics.lua")
+  writetofile(newMissionStr, "RCW_Persistence_Statics.lua")
   SaveStatics={} 
 
   timer.scheduleFunction(function() 
