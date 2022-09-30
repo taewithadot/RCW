@@ -1,7 +1,5 @@
 --RCW Slot Block script by Taerdryn
 
-
-
 function writetofile(data, file)--Function for saving to file (commonly found)
 	File = io.open(file, "w")
 	File:write(data)
@@ -35,7 +33,6 @@ function killSlot:onEvent(Event)
 	if Event.id == world.event.S_EVENT_PILOT_DEAD or Event.id == world.event.S_EVENT_EJECTION then
 
 		if Event.initiator:getPlayerName() then
-			trigger.action.outText("We got em bois",5)
 			deadSlots[Event.initiator:getName()] = Event.initiator:getName()
 			writetofile(betterSerialize(deadSlots, "deadSlots"), "RCW_DeadSlots.lua")
 		end
@@ -64,19 +61,12 @@ function checkSlot:onEvent(Event)
 
 			end
 
-
-
-
 		end
 
 	end
 
-
 end
 world.addEventHandler(checkSlot)
-
-
-
 
 
 if file_exists("RCW_DeadSlots.lua") then
