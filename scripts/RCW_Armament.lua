@@ -128,4 +128,4 @@ function LoadoutCheck_Land:onEvent(Event)
 end
 world.addEventHandler(LoadoutCheck_Land)
 
-trigger.action.outText("RCW Armament Module v1.00 loaded!", 10) --DEBUG
+trigger.action.outText("RCW Armament loaded!", 10) --DEBUG
